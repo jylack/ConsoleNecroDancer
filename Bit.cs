@@ -1,63 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NecroDancer
+﻿namespace NecroDancer
 {
-    struct Point
+    public struct Point
     {
-        int x, y;
-        
 
         public Point(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
         }
 
-        public int PosX
+        public int X
         {
-            get { return x; }
-            set { x = value; }
+            get; set;
         }
 
-        public int PosY
+        public int Y
         {
-            get { return y; }
-            set { y = value; }
+            get; set;
         }
 
         public Point GetPos()
         {
-            return new Point(x, y);
+            return new Point(X, Y);
         }
 
         //일일이 비교하는거 쓰기 귀찮아져서 만듬.
-        public static bool operator == (Point a, Point b)
+        public static bool operator ==(Point a, Point b)
         {
-            return a.x == b.x && a.y == b.y;
+            return a.X == b.X && a.Y == b.Y;
         }
         public static bool operator !=(Point a, Point b)
         {
-            return a.x != b.x && a.y != b.y;
+            return a.X != b.X && a.Y != b.Y;
         }
 
         public static bool operator >(Point a, Point b)
         {
-            return a.x > b.x;
+            return a.X > b.X;
         }
 
         public static bool operator <(Point a, Point b)
         {
-            return a.x < b.x;
-        }   
+            return a.X < b.X;
+        }
 
 
     }
 
-    class Bit
+    class Beat
     {
         Point _point;
         int _speed;
@@ -67,7 +57,7 @@ namespace NecroDancer
 
 
 
-        public Bit(Point point, int speed, bool isLeft)
+        public Beat(Point point, int speed, bool isLeft)
         {
             _point = point;
             _speed = speed;
@@ -98,11 +88,11 @@ namespace NecroDancer
         {
             if (_isLeft)
             {
-                _point.PosX += 1;
+                _point.X += 1;
             }
             else
             {
-                _point.PosX -= 1; 
+                _point.X -= 1;
             }
         }
 

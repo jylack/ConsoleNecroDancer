@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NecroDancer
 {
@@ -10,7 +7,7 @@ namespace NecroDancer
     {
         Point _point;
         int _len;
-        Queue<Bit> bits;
+        Queue<Beat> beats;
         string _image = "[     ]";
         int size;
 
@@ -18,7 +15,7 @@ namespace NecroDancer
         public Hart(Point point, int difficulty)
         {
 
-            bits = new Queue<Bit>();
+            beats = new Queue<Beat>();
 
 
             _point = point;
@@ -31,44 +28,44 @@ namespace NecroDancer
             _len = difficulty;
         }
 
-        public void AddBit(int speed)
+        public void Addbeat(int speed)
         {
 
-            bits.Enqueue(new Bit(new Point(0, 0), speed, true)); //왼쪽
-            bits.Enqueue(new Bit(new Point(Console.WindowWidth, 0), speed,false ));//오른쪽 추가
+            beats.Enqueue(new Beat(new Point(0, 0), speed, true)); //왼쪽
+            beats.Enqueue(new Beat(new Point(Console.WindowWidth, 0), speed, false));//오른쪽 추가
         }
 
-        public void RemoveBits()
+        public void Removebeats()
         {
-            bits.Dequeue();
-            bits.Dequeue();
+            beats.Dequeue();
+            beats.Dequeue();
         }
 
-        public void BitMove()
+        public void beatMove()
         {
-            foreach (var bit in bits)
+            foreach (var beat in beats)
             {
-                bit.Move();
+                beat.Move();
             }
         }
 
-        public Bit GetBit()
+        public Beat Getbeat()
         {
-            return bits.Peek();
+            return beats.Peek();
         }
 
-        public bool IsBits()
+        public bool Isbeats()
         {
-            return bits.Count > 0;
+            return beats.Count > 0;
         }
         public bool IsNonCheckHit()
         {
             //left right 순서대로 비트 넣을거니까 0 2 4 같은 짝수는 전부다 왼쪽 비트 이다.
             //고로 맨앞에는 무조건 왼쪽 비트가 들어온다.
-            Point point = bits.Peek().Point;
+            Point point = beats.Peek().Point;
 
             //
-            if (point.PosX >= _point.PosX + size)
+            if (point.X >= _point.Y + size)
             {
                 return true;
             }
@@ -79,9 +76,9 @@ namespace NecroDancer
         {
             //left right 순서대로 비트 넣을거니까 0 2 4 같은 짝수는 전부다 왼쪽 비트 이다.
             //고로 맨앞에는 무조건 왼쪽 비트가 들어온다.
-            Point point = bits.Peek().Point;
-            if (point.PosX >= _point.PosX &&
-                point.PosX <= _point.PosX + _len)
+            Point point = beats.Peek().Point;
+            if (point.X >= _point.X &&
+                point.X <= _point.X + _len)
             {
                 return true;
             }
@@ -95,13 +92,13 @@ namespace NecroDancer
 
         public void Print()
         {
-            Console.SetCursorPosition(_point.PosX, _point.PosY);
+            Console.SetCursorPosition(_point.X, _point.Y);
             Console.WriteLine(_image);
 
-            foreach (var bit in bits)
+            foreach (var beat in beats)
             {
-                Console.SetCursorPosition(bit.Point.PosX, bit.Point.PosY);
-                Console.Write(bit.Image);
+                Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
+                Console.Write(beat.Image);
             }
         }
 
