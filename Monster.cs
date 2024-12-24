@@ -70,7 +70,8 @@ namespace NecroDancer
 
                         if (tempPos.Y < 0)
                         {
-                            tempPos.Y = 0;
+                            tempPos.Y = _point.Y + movePoint;
+
                         }
 
                         //if (target.point.Y >= tempPos.Y)
@@ -86,7 +87,8 @@ namespace NecroDancer
 
                         if (tempPos.Y > 9)
                         {
-                            tempPos.Y = 9;
+                            tempPos.Y = _point.Y - movePoint;
+
                         }
 
                         //if (target.point.Y <= tempPos.Y)
@@ -101,7 +103,8 @@ namespace NecroDancer
 
                         if (tempPos.X < 0)
                         {
-                            tempPos.X = 0;
+                            tempPos.X = _point.X + movePoint;
+
                         }
 
 
@@ -118,7 +121,8 @@ namespace NecroDancer
 
                         if (tempPos.X > 9)
                         {
-                            tempPos.X = 9;
+                            tempPos.X = _point.X - movePoint;
+
                         }
 
 
@@ -218,6 +222,7 @@ namespace NecroDancer
 
         public void Move(Unit target, Point point)
         {
+            
             isMove = true;
             #region
             ////공격할 조건

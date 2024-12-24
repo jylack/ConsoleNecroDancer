@@ -19,9 +19,6 @@ namespace NecroDancer
             Def = 0;
             Lange = 1;
             _image = "ⓟ";
-
-
-
         }
 
         public bool Move(Fword fword)

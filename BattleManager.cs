@@ -110,36 +110,39 @@ namespace NecroDancer
             #region 몬스터이동
 
 
-      
+            //임시 좌표에 몬스터 좌표 넣어둠.
+            tempPos = monster.point;
+
+
+            //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
+            monsterPosQueue.Enqueue(monster.TempMovePos(player, tempPos));
+
             //임시 좌표로 몬스터 이동 가능한 지역인가 탐색
 
             //해당 위치가 플레이어가 아닌가?
-            if(_tileManager.tiles[tempPos.Y, tempPos.X].GetTileType() != TileType.Player)
+            if (_tileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() != TileType.Player)
             {
-                //임시 좌표에 몬스터 좌표 넣어둠.
-                tempPos = monster.point;
-
-                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
-                monsterPosQueue.Enqueue(monster.TempMovePos(player, tempPos));
 
                 //이동할 좌표의 타일 저장
                 tempTileTypes.Enqueue(_tileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType());
+                Console.SetCursorPosition(20, 3);
+                Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
 
                 //이동하기 전 좌표에 이전 타일 배치.
-                _tileManager.SetTile(monster.point, tempTileTypes.Dequeue());
+                _tileManager.SetTile(tempPos, tempTileTypes.Dequeue());
 
-                //임시 좌표로 몬스터 이동.
+                //다음 좌표로 몬스터 이동.
                 monster.Move(player, monsterPosQueue.Dequeue());
 
-                //몬스터 이동한 위치에 몬스터 그려주기.
+                //몬스터 이동한 위치에 몬스터 그려주기.                
                 _tileManager.SetTile(monster.point, TileType.Monster);
 
             }
             //이동 불가지역임. 나중에 몬스터별로 행동다르게 할지도
             else
             {
+                monsterPosQueue.Dequeue();
 
- 
             }
             #endregion
 
@@ -178,7 +181,10 @@ namespace NecroDancer
             Console.Write($"Player  X : {player.point.X} Y : {player.point.Y}");
             Console.SetCursorPosition(20, 3);
             //Console.Write($"tempPosTile: {_tileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
-            Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
+            //Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
+            Console.SetCursorPosition(20, 4);
+            Console.WriteLine($"{monsterPosQueue.Count}");
+
         }
 
 
