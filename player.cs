@@ -27,7 +27,7 @@ namespace NecroDancer
         public void Move(Fword fword) 
         {
             if( _point.Y + movePoint < 9  && _point.X + movePoint < 9 &&                                 
-                _point.Y - movePoint > 0 && _point.X - movePoint > 0 )
+                _point.Y - movePoint >= 0 && _point.X - movePoint >= 0 )
             {
 
                 switch (fword)
