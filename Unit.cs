@@ -2,6 +2,7 @@
 
 namespace NecroDancer
 {
+    //유닛들이 공통적으로 가지고있을 것들
     public abstract class Unit
     {
         protected Point _point;

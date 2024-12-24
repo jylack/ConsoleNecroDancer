@@ -22,7 +22,7 @@ namespace NecroDancer
         Right
     }
 
-    internal class GameManager
+    internal class GameManager : IManagerInterFace
     {
 
         int height ;
@@ -34,10 +34,10 @@ namespace NecroDancer
         Stopwatch beatWatch = new Stopwatch();
 
 
-        ConsoleKeyInfo input;
+        public static ConsoleKeyInfo input;
 
 
-        bool isGameStart = true;
+        public static bool isGameStart = true;
 
         int beatSpeed = 1;
 
@@ -53,13 +53,30 @@ namespace NecroDancer
 
             height = Console.WindowHeight;
             width = Console.WindowWidth / 2 - 3;
-            hart = new Hart(new Point(width, 0), (int)Difficulty.Normal);
+            hart = new Hart(new Point(width, 20), (int)Difficulty.Normal);
 
+        }
+
+        public void KeyInputAction()
+        {
+            //비트가 있고 하트가 맞았을때
+            if (hart.Isbeats() && hart.IsCheckHit())
+            {
+                combo++;
+                hart.Removebeats();
+                isAction = true;
+            }
+            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
+            else if (hart.Isbeats() && hart.IsCheckHit() == false)
+            {
+                combo = 0;
+                hart.Removebeats();
+                isAction = false;
+            }
         }
 
         public void Update()
         {
-            Console.CursorVisible = false;
 
             input = new ConsoleKeyInfo();
 
@@ -77,59 +94,41 @@ namespace NecroDancer
                     switch (input.Key)
                     {
                         case ConsoleKey.Spacebar:
-                            //비트가 있고 하트가 맞았을때
-                            if (hart.Isbeats() && hart.IsCheckHit())
-                            {
-                                combo++;
-                                hart.Removebeats();
-                                isAction = true;
-                            }
-                            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
-                            else if (hart.Isbeats() && hart.IsCheckHit() == false)
-                            {
-                                combo = 0;
-                                hart.Removebeats();
-                                isAction = false;
-                            }
+                            
                             break;
 
                         //방향 이동.
                         case ConsoleKey.A:
                         case ConsoleKey.LeftArrow:
-                            if (isAction)
-                            {
-
-                            }
-
+                            KeyInputAction();
+                            isGameStart = false;
                             break;
                         case ConsoleKey.RightArrow:
                         case ConsoleKey.D:
-                            if (isAction)
-                            {
-
-                            }
+                            isGameStart = false;
+                            KeyInputAction();
 
                             break;
                         case ConsoleKey.UpArrow:
                         case ConsoleKey.W:
-                            if (isAction)
-                            {
-
-                            }
+                            isGameStart = false;
+                            KeyInputAction();
 
                             break;
                         case ConsoleKey.S:
                         case ConsoleKey.DownArrow:
-                            if (isAction)
-                            {
-
-                            }
+                            isGameStart = false;
+                            KeyInputAction();
 
                             break;
 
 
                     }
 
+                }
+
+                if(isAction) 
+                {
 
                 }
 
@@ -137,36 +136,12 @@ namespace NecroDancer
                 if (sw.ElapsedMilliseconds > gameSpeed)
                 {
 
-                    hart.Addbeat(beatSpeed);//비트가 움직일속도 지정                    
+                    hart.Addbeat(beatSpeed,hart.GetPos().Y);//비트가 움직일속도 지정                    
 
                     sw.Restart();
                 }
 
-                //0.1초당 화면 재생 비트이동도 0.1초당 함.
-                if (beatWatch.ElapsedMilliseconds > 100)
-                {
-                    Console.Clear();
-
-                    if (hart.Isbeats())
-                    {
-                        hart.beatMove();
-
-                        //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
-                        if (hart.IsNonCheckHit())
-                        {
-                            hart.Removebeats();
-                            combo = 0;
-
-                        }
-                    }
-
-                    beatWatch.Restart();
-
-                    hart.Print();
-                    Console.WriteLine();
-                    Console.WriteLine(combo);
-
-                }
+                Render();
 
 
             }
@@ -175,5 +150,42 @@ namespace NecroDancer
 
             sw.Stop();
         }
+
+        public void Render()
+        {
+            //0.1초당 화면 재생 비트이동도 0.1초당 함.
+            if (beatWatch.ElapsedMilliseconds > 100)
+            {
+                //Console.Clear();
+                ConSoleClear();
+
+                if (hart.Isbeats())
+                {
+                    hart.beatMove();
+
+                    //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
+                    if (hart.IsNonCheckHit())
+                    {
+                        hart.Removebeats();
+                        combo = 0;
+
+                    }
+                }
+
+                beatWatch.Restart();
+
+                hart.Print();
+                Console.WriteLine();
+                Console.WriteLine(combo);
+
+            }
+        }
+
+        public void ConSoleClear()
+        {
+            Console.SetCursorPosition(0, hart.GetPos().Y);
+            Console.WriteLine("                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \n");
+        }
+
     }
 }

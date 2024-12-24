@@ -47,6 +47,7 @@
     <Compile Include="Bit.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Hart.cs" />
+    <Compile Include="IManagerInterFace.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="player.cs" />

@@ -32,6 +32,12 @@ namespace NecroDancer
         int _atk;//함정같은 경우 타일자체 데미지있음.
         int _def;//상자같은경우 방어력있어서 몇이상 공격력만 되게 해볼까함.
 
+
+        public int Hp { get { return _hp; } set { _hp = value; } }
+        public int Atk { get { return _atk; }}
+        public int Def { get { return _def; }}
+
+
         public Tile()
         {
             _type = TileType.Floor;
@@ -82,7 +88,7 @@ namespace NecroDancer
     {
         public Tile[,] tiles; //맵타일
 
-        string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "⊙" };//아이템 까지 추가함.
+        string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" ,"M" , "P"};//전부 표기
 
         public TileManager()
         {
@@ -98,6 +104,11 @@ namespace NecroDancer
             }
         }
 
+        public void SetTile(Point point, TileType type)
+        {
+            tiles[point.Y, point.X] = new Tile(type);
+        }
+
         public void Update()
         {
         }
@@ -109,6 +120,8 @@ namespace NecroDancer
 
         public void Render()
         {
+            Console.SetCursorPosition(0, 0);
+
             for (int y = 0; y < 10; y++)
             {
                 for (int x = 0; x < 10; x++)

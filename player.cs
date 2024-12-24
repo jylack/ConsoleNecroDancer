@@ -9,37 +9,50 @@ namespace NecroDancer
 {
     public class Player : Unit
     {
+        int movePoint = 1;
 
 
-
-        public Player(Point point)
+        public Player()
         {
-            _point = point;
+            Life = 4;
+            Atk = 1;
+            Def = 0;
+            Lange = 1;
+            _image = "P";
+
+            
 
         }
 
         public void Move(Fword fword) 
         {
-            switch(fword)
+            if( _point.Y + movePoint < 9  && _point.X + movePoint < 9 &&                                 
+                _point.Y - movePoint > 0 && _point.X - movePoint > 0 )
             {
-                case Fword.Up:
-                    //위로 이동
-                    _point.Y--;
 
-                    break;
-                case Fword.Down:
-                    //아래로 이동
-                    _point.Y++;
-                    break;
-                case Fword.Left:
-                    //왼쪽으로 이동
-                    _point.X--;
-                    break;
-                case Fword.Right:
-                    //오른쪽으로 이동
-                    _point.X++;
-                    break;
+                switch (fword)
+                {
+                    case Fword.Up:
+                        //위로 이동
+                        _point.Y -= movePoint;
+
+                        break;
+                    case Fword.Down:
+                        //아래로 이동
+                        _point.Y += movePoint;
+                        
+                        break;
+                    case Fword.Left:
+                        //왼쪽으로 이동
+                        _point.X -= movePoint;
+                        break;
+                    case Fword.Right:
+                        //오른쪽으로 이동
+                        _point.X += movePoint;
+                        break;
+                }
             }
+
         }
         public void Attack(Point target)
         {
@@ -55,7 +68,10 @@ namespace NecroDancer
             
         }
 
-        public void Spawn() { }
+        public void Spawn(Point point) 
+        {
+            _point = point;
+        }
 
 
         public void PopItem(Item item) 

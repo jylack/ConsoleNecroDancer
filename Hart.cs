@@ -26,13 +26,19 @@ namespace NecroDancer
             //_point.PosX -= size;
 
             _len = difficulty;
+
         }
 
-        public void Addbeat(int speed)
+        public Point GetPos()
+        {
+            return _point;
+        }
+
+        public void Addbeat(int speed ,int posY)
         {
 
-            beats.Enqueue(new Beat(new Point(0, 0), speed, true)); //왼쪽
-            beats.Enqueue(new Beat(new Point(Console.WindowWidth, 0), speed, false));//오른쪽 추가
+            beats.Enqueue(new Beat(new Point(0, posY), speed, true)); //왼쪽
+            beats.Enqueue(new Beat(new Point(Console.WindowWidth, posY), speed, false));//오른쪽 추가
         }
 
         public void Removebeats()
@@ -65,7 +71,7 @@ namespace NecroDancer
             Point point = beats.Peek().Point;
 
             //
-            if (point.X >= _point.Y + size)
+            if (point.X >= _point.X + size)
             {
                 return true;
             }
