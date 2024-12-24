@@ -14,6 +14,7 @@ namespace NecroDancer
         protected int _def;
         protected int _lange;
         protected string _image;
+        
 
         public Unit()
         {

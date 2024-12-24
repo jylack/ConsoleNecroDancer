@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Threading;
 
 namespace NecroDancer
 {
@@ -10,6 +8,9 @@ namespace NecroDancer
     {
         bool isAttack = false;
         int movePoint = 1;
+        int count = 0;
+        public bool isMove = true;
+
 
         public Monster()
         {
@@ -18,61 +19,290 @@ namespace NecroDancer
             _def = 0;
             _lange = 0;
             _image = "ⓜ";
+            count++;
+        }
+
+
+        //몬스터 좌표 이동안시키고 이동시킬 좌표 템프에 넣어둠.
+        public Point TempMovePos(Unit target, Point tempPos)
+        {
+
+            //tempPos 임시 몬스터 좌표
+
+
+
+            //target 플레이어 유닛정보
+            bool isMove = true;
+            if (isMove)
+            {
+                Random random = new Random();
+                Fword fword = new Fword();
+
+                if (target.point.X < tempPos.X)
+                {
+                    fword = Fword.Left;
+                }
+                else if (target.point.X > tempPos.X)
+                {
+                    fword = Fword.Right;
+                }
+                else
+                {
+                    if (target.point.Y < tempPos.Y)
+                    {
+                        fword = Fword.Up;
+                    }
+                    else if (target.point.Y > tempPos.Y)
+                    {
+                        fword = Fword.Down;
+                    }
+                    else
+                    {
+                        fword = Fword.Down;
+                    }
+                }
+
+
+                switch (fword)
+                {
+                    case Fword.Up:
+                        tempPos.Y = _point.Y - movePoint;
+
+                        if (tempPos.Y < 0)
+                        {
+                            tempPos.Y = 0;
+                        }
+
+                        //if (target.point.Y >= tempPos.Y)
+                        //{
+                        //    tempPos.Y = _point.Y + movePoint;
+                        //    isAttack = true;
+                        //}
+                        break;
+
+                    case Fword.Down:
+
+                        tempPos.Y = _point.Y + movePoint;
+
+                        if (tempPos.Y > 9)
+                        {
+                            tempPos.Y = 9;
+                        }
+
+                        //if (target.point.Y <= tempPos.Y)
+                        //{
+                        //    tempPos.Y = _point.Y - movePoint;
+                        //    isAttack = true;
+                        //}
+                        break;
+
+                    case Fword.Left:
+                        tempPos.X = _point.X - movePoint;
+
+                        if (tempPos.X < 0)
+                        {
+                            tempPos.X = 0;
+                        }
+
+
+                        //if (target.point.X >= tempPos.X)
+                        //{
+                        //    tempPos.X = _point.X + movePoint;
+                        //    isAttack = true;
+
+                        //}
+                        break;
+
+                    case Fword.Right:
+                        tempPos.X = _point.X + movePoint;
+
+                        if (tempPos.X > 9)
+                        {
+                            tempPos.X = 9;
+                        }
+
+
+                        //if (target.point.X <= tempPos.X)
+                        //{
+                        //    tempPos.X = _point.X - movePoint;
+                        //    isAttack = true;
+
+                        //}
+                        break;
+                }
+
+
+                //여기코드들 다 수정해야함.
+                /*
+                //if (target.point.X < _point.X - movePoint)
+                //{
+                //    _point.X -= movePoint;
+                //}
+                //else if (target.point.X > _point.X + movePoint)
+                //{
+                //    _point.X += movePoint;
+                //}
+                //else if (target.point.Y < _point.Y - movePoint)
+                //{
+                //    _point.Y -= movePoint;
+                //}
+                //else if (target.point.Y > _point.Y + movePoint)
+                //{
+                //    _point.Y += movePoint;
+                //}
+
+
+
+
+                //Console.SetCursorPosition(20, 0);
+                //Console.Write($"X : {tempPos.X} Y : {tempPos.Y}");
+
+                //Fword fword = (Fword)random.Next(0, 4);//동서남북
+
+                //switch (fword)
+                //{
+                //    case Fword.Up:
+                //        tempPos.Y = _point.Y - movePoint;
+
+                //        if (target.point.Y >= tempPos.Y)
+                //        {
+                //            tempPos.Y = _point.Y + movePoint;
+                //            isAttack = true;
+                //        }
+                //        break;
+
+                //    case Fword.Down:
+                //        tempPos.Y = _point.Y = movePoint;
+
+                //        if (target.point.Y <= tempPos.Y)
+                //        {
+                //            tempPos.Y = _point.Y - movePoint;
+                //            isAttack = true;
+                //        }
+                //        break;
+                //    case Fword.Left:
+                //        tempPos.X = _point.X - movePoint;
+
+                //        if (target.point.X >= tempPos.X)
+                //        {
+                //            tempPos.X = _point.X + movePoint;
+                //            isAttack = true;
+
+                //        }
+                //        break;
+                //    case Fword.Right:
+                //        tempPos.X = _point.X + movePoint;
+
+                //        if (target.point.X <= tempPos.X)
+                //        {
+                //            tempPos.X = _point.X - movePoint;
+                //            isAttack = true;
+
+                //        }
+                //        break;
+                //}
+
+
+                //Console.SetCursorPosition(20, 0);
+                //Console.Write(fword.ToString());
+
+
+                //깊이탐색으로 플레이어한테 이동.
+                //당장은 테스트이니 플레이어 좌표로 직진
+                */
+            }
+
+            return tempPos;
 
         }
 
-        public void Move(Unit target)
+        public void Move(Unit target, Point point)
         {
-            bool isMove = true;
-
-            //공격할 조건
-            if (target.point.X == _point.X - 1
-                && target.point.Y == _point.Y)// 플레이어가 왼쪽 옆에있을때.
-            {
-                isAttack = true;
-                isMove = false;
-            }
-            else if (target.point.X == _point.X + 1
-                && target.point.Y == _point.Y)// 플레이어가 오른쪽 옆에있을때.
-            {
-                isAttack = true;
-                isMove = false;
-            }
-            else if (target.point.X == _point.X
-                && target.point.Y == _point.Y + 1)//아래있을때.
-            {
-                isAttack = true;
-                isMove = false;
-            }
-            else if (target.point.X == _point.X
-            && target.point.Y == _point.Y - 1)//위에있을때
-            {
-                isAttack = true;
-                isMove = false;
-            }
-
+            bool isLeft = false;
+            isMove = true;
+            #region
+            ////공격할 조건
+            //if (target.point.X == _point.X - 1
+            //    && target.point.Y == _point.Y)// 플레이어가 왼쪽 옆에있을때.
+            //{
+            //    isAttack = true;
+            //    isMove = false;
+            //}
+            //else if (target.point.X == _point.X + 1
+            //    && target.point.Y == _point.Y)// 플레이어가 오른쪽 옆에있을때.
+            //{
+            //    isAttack = true;
+            //    isMove = false;
+            //}
+            //else if (target.point.X == _point.X
+            //    && target.point.Y == _point.Y + 1)//아래있을때.
+            //{
+            //    isAttack = true;
+            //    isMove = false;
+            //}
+            //else if (target.point.X == _point.X
+            //&& target.point.Y == _point.Y - 1)//위에있을때
+            //{
+            //    isAttack = true;
+            //    isMove = false;
+            //}
+            #endregion
             if (isMove)
             {
+                _point = point;
+
+                #region
+                //Random random = new Random();
+
+                //Fword fword = (Fword)random.Next(0, 4);//동서남북
+
+                //switch (fword)
+                //{
+                //    case Fword.Up:
+                //        _point.Y -= movePoint;
+
+                //        if (target.point.Y >= _point.Y)
+                //        {
+                //            _point.Y += movePoint;
+                //            isAttack = true;
+                //        }
+                //        break;
+
+                //    case Fword.Down:
+                //        _point.Y += movePoint;
+
+                //        if (target.point.Y <= _point.Y)
+                //        {
+                //            _point.Y -= movePoint;
+                //            isAttack = true;
+                //        }
+                //            break;
+                //    case Fword.Left:
+                //        _point.X -= movePoint;
+
+                //        if (target.point.X >= _point.X)
+                //        {
+                //            _point.X += movePoint;
+                //            isAttack = true;
+
+                //        }
+                //        break;
+                //    case Fword.Right:
+                //        _point.X += movePoint;
+
+                //        if (target.point.X <= _point.X)
+                //        {
+                //            _point.X -= movePoint;
+                //            isAttack = true;
+
+                //        }
+                //        break;
+                //}
+
+
                 //깊이탐색으로 플레이어한테 이동.
                 //당장은 테스트이니 플레이어 좌표로 직진
-                if (target.point.X < _point.X - movePoint)
-                {
-                    _point.X -= movePoint;
-                }
-                else if (target.point.X > _point.X + movePoint)
-                {
-                    _point.X += movePoint;
-                }
-
-                else if (target.point.Y < _point.Y - movePoint)
-                {
-                    _point.Y -= movePoint;
-                }
-                else if (target.point.Y > _point.Y + movePoint)
-                {
-                    _point.Y += movePoint;
-                }
-
+                #endregion
             }
 
 
@@ -81,7 +311,7 @@ namespace NecroDancer
                 //공격
                 Attack(target);
             }
-
+            //Console.WriteLine(count);
         }
         public void Attack(Unit target)
         {

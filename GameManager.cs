@@ -73,6 +73,9 @@ namespace NecroDancer
                 hart.Removebeats();
                 isAction = false;
             }
+
+            isGameStart = false;
+
         }
 
         public void Update()
@@ -101,23 +104,19 @@ namespace NecroDancer
                         case ConsoleKey.A:
                         case ConsoleKey.LeftArrow:
                             KeyInputAction();
-                            isGameStart = false;
                             break;
                         case ConsoleKey.RightArrow:
                         case ConsoleKey.D:
-                            isGameStart = false;
                             KeyInputAction();
 
                             break;
                         case ConsoleKey.UpArrow:
                         case ConsoleKey.W:
-                            isGameStart = false;
                             KeyInputAction();
 
                             break;
                         case ConsoleKey.S:
                         case ConsoleKey.DownArrow:
-                            isGameStart = false;
                             KeyInputAction();
 
                             break;
