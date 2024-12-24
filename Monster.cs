@@ -218,7 +218,6 @@ namespace NecroDancer
 
         public void Move(Unit target, Point point)
         {
-            bool isLeft = false;
             isMove = true;
             #region
             ////공격할 조건

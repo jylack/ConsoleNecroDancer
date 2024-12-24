@@ -123,7 +123,7 @@ namespace NecroDancer
                 monsterPosQueue.Enqueue(monster.TempMovePos(player, tempPos));
 
                 //이동할 좌표의 타일 저장
-                tempTileTypes.Enqueue(_tileManager.tiles[tempPos.Y, tempPos.X].GetTileType());
+                tempTileTypes.Enqueue(_tileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType());
 
                 //이동하기 전 좌표에 이전 타일 배치.
                 _tileManager.SetTile(monster.point, tempTileTypes.Dequeue());
@@ -177,7 +177,8 @@ namespace NecroDancer
             Console.SetCursorPosition(20, 2);
             Console.Write($"Player  X : {player.point.X} Y : {player.point.Y}");
             Console.SetCursorPosition(20, 3);
-            Console.Write($"tempPosTile: {_tileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
+            //Console.Write($"tempPosTile: {_tileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
+            Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
         }
 
 
