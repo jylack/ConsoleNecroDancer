@@ -17,7 +17,7 @@ namespace NecroDancer
             _life = 0;
             _def = 0;
             _lange = 0;
-            _image = "M";
+            _image = "ⓜ";
 
         }
 

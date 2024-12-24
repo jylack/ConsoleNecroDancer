@@ -21,15 +21,17 @@ namespace NecroDancer
         TileType tempTile; // 멥에 변동이 생겼을때 원래 가지고있던 타일값 저장하는 용도.
         TileType tempTile2; // 멥에 변동이 생겼을때 원래 가지고있던 타일값 저장하는 용도.
 
+        bool isPlayerMove = false;
+
         public void Init()
         {
-            
+
 
             _tileManager = new TileManager();
             _tileManager.Init();
 
             player = new Player();
-            
+
             monster = new Monster();
 
             dropItemList = new List<Item>();
@@ -55,14 +57,19 @@ namespace NecroDancer
 
             tempPos = monster.point;
 
-            playerTempPos = player.point;
+
+            if (isPlayerMove)
+            {
+                playerTempPos = player.point;
+
+            }
 
             monster.Move(player);
 
 
             _tileManager.SetTile(tempPos, tempTile);//지나간자리 초기화
-            //_tileManager.SetTile(tempPos, TileType.Floor);//지나간자리 초기화
-            
+                                                    //_tileManager.SetTile(tempPos, TileType.Floor);//지나간자리 초기화
+
             _tileManager.SetTile(monster.point, TileType.Monster);
 
             tempTile = _tileManager.tiles[tempPos.Y, tempPos.X].GetTileType();
@@ -76,34 +83,39 @@ namespace NecroDancer
                 case ConsoleKey.A:
                 case ConsoleKey.LeftArrow:
 
-                    player.Move(Fword.Left);
-                    
+                    isPlayerMove = player.Move(Fword.Left);
+
                     break;
                 case ConsoleKey.RightArrow:
                 case ConsoleKey.D:
-                    player.Move(Fword.Right);
+                    isPlayerMove = player.Move(Fword.Right);
 
 
                     break;
                 case ConsoleKey.UpArrow:
                 case ConsoleKey.W:
-                    player.Move(Fword.Up);
+                    isPlayerMove = player.Move(Fword.Up);
 
 
                     break;
                 case ConsoleKey.S:
                 case ConsoleKey.DownArrow:
-                    player.Move(Fword.Down);
+                    isPlayerMove = player.Move(Fword.Down);
 
                     break;
             }
-            _tileManager.SetTile(playerTempPos, tempTile);//지나간자리 초기화
+
+            if (isPlayerMove)
+            {
+                _tileManager.SetTile(playerTempPos, tempTile);//지나간자리 초기화
 
 
-            _tileManager.SetTile(player.point, TileType.Player);
-            tempTile2 = _tileManager.tiles[playerTempPos.Y, playerTempPos.X].GetTileType();
+                _tileManager.SetTile(player.point, TileType.Player);
+                tempTile2 = _tileManager.tiles[playerTempPos.Y, playerTempPos.X].GetTileType();
 
-            _tileManager.SetTile(playerTempPos, tempTile);//지나간자리 초기화
+
+                _tileManager.SetTile(playerTempPos, tempTile);//지나간자리 초기화|
+            }
 
 
         }

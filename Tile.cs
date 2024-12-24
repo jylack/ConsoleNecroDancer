@@ -88,7 +88,7 @@ namespace NecroDancer
     {
         public Tile[,] tiles; //맵타일
 
-        string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" ,"M" , "P"};//전부 표기
+        string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "ⓜ", "ⓟ" };//전부 표기
 
         public TileManager()
         {
