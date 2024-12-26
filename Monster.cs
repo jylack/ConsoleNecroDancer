@@ -428,7 +428,7 @@ namespace NecroDancer
                 dmg = 0;
             }
 
-            Player.Life -= dmg; 
+            Player.Life += dmg; 
         }
 
         public override void Move(Point point)

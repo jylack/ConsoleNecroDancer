@@ -4,21 +4,21 @@ namespace NecroDancer
 {
     class Slime : Monster
     {
-        Fword fword = new Fword();
-        Random random = new Random();
+        public Fword fword = new Fword();
+
+         Random random = new Random();
 
         bool isAtkMonster;
 
-        Point tempPos;
+        Point startPos;
 
         public Slime(Point point)
         {
-            tempPos = new Point();
+            startPos = new Point();
 
             _point = point;
 
-            tempPos = _point;//처음좌표 알아야함. 왓다갓다만할거라서.
-
+            startPos = _point;//처음좌표 알아야함. 왓다갓다만할거라서.
 
             _image = "ⓢ";
             _atk = 1;
@@ -40,25 +40,25 @@ namespace NecroDancer
 
         public override void Move()
         {
-            
-            int tempUY = 0;//위로
-            int tempDY = 0;//아래로
-            int tempLX = 0;//왼쪽
-            int tempRX = 0;//오른쪽
 
-            int moveCount = 0;
+            //int tempUY = 0;//위로
+            //int tempDY = 0;//아래로
+            //int tempLX = 0;//왼쪽
+            //int tempRX = 0;//오른쪽
 
-            tempUY = (_point.Y - movePoint) > 0 ? (_point.Y - movePoint) : 0;
-            moveCount += tempUY == 0 ? 0 : 1;
-            
-            tempDY = (_point.Y + movePoint) < 9 ? (_point.Y + movePoint) : 9;
-            moveCount += tempDY == 9 ? 0 : 1;
+            //int moveCount = 0;
 
-            tempLX = (_point.X - movePoint) > 0 ? (_point.X - movePoint) : 0;
-            moveCount += tempLX == 0 ? 0 : 1;
+            //tempUY = (_point.Y - movePoint) > 0 ? (_point.Y - movePoint) : 0;
+            //moveCount += tempUY == 0 ? 0 : 1;
 
-            tempRX = (_point.X + movePoint) < 9 ? (_point.X + movePoint) : 9;
-            moveCount += tempRX == 9 ? 0 : 1;
+            //tempDY = (_point.Y + movePoint) < 9 ? (_point.Y + movePoint) : 9;
+            //moveCount += tempDY == 9 ? 0 : 1;
+
+            //tempLX = (_point.X - movePoint) > 0 ? (_point.X - movePoint) : 0;
+            //moveCount += tempLX == 0 ? 0 : 1;
+
+            //tempRX = (_point.X + movePoint) < 9 ? (_point.X + movePoint) : 9;
+            //moveCount += tempRX == 9 ? 0 : 1;
 
 
             //fword = (Fword)random.Next(0, moveCount);
@@ -81,25 +81,30 @@ namespace NecroDancer
                             break;
                         }
 
-                        if (tempPos == _point)
+                        if (startPos == _point)
                         {
                             tempY = _point.Y - movePoint;
                         }
                         else
                         {
                             tempY = _point.Y + movePoint;
+                            
                         }
 
-                        if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+                        if (tempY < TileManager.tileSize && tempY >= 0)
                         {
-                            //몬스터가 공격.
-                            Attack();
+                            if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+                            {
+                                //몬스터가 공격.
+                                Attack();
+                            }
+                            //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
+                            else
+                            {
+                                _point.Y = tempY;
+                            }
                         }
-                        //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
-                        else
-                        {
-                            _point.Y = tempY;
-                        }
+
                         break;
 
                     case Fword.Down:
@@ -112,7 +117,7 @@ namespace NecroDancer
 
 
 
-                        if (tempPos == _point)
+                        if (startPos == _point)
                         {
                             tempY = _point.Y + movePoint;
                         }
@@ -121,14 +126,19 @@ namespace NecroDancer
                             tempY = _point.Y - movePoint;
                         }
 
-                        if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+
+                        if (tempY < TileManager.tileSize && tempY >= 0)
                         {
-                            Attack();
-                        }
-                        //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
-                        else
-                        {
-                            _point.Y = tempY;
+
+                            if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                            //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
+                            else
+                            {
+                                _point.Y = tempY;
+                            }
                         }
                         break;
 
@@ -141,7 +151,7 @@ namespace NecroDancer
                         }
 
 
-                        if (tempPos == _point)
+                        if (startPos == _point)
                         {
                             tempX = _point.X - movePoint;
                         }
@@ -149,16 +159,19 @@ namespace NecroDancer
                         {
                             tempX = _point.X + movePoint;
                         }
+                        if (tempX < TileManager.tileSize && tempX >= 0)
+                        {
+                            if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                            //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
+                            else
+                            {
+                                _point.X = tempX;
+                            }
+                        }
 
-                        if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
-                        {
-                            Attack();
-                        }
-                        //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
-                        else
-                        {
-                            _point.X = tempX;
-                        }
 
                         break;
 
@@ -168,13 +181,13 @@ namespace NecroDancer
                             fword = Fword.Left;
                             break;
                         }
-                        else if (_point.X - movePoint > 0)
+                        else if (_point.X + movePoint > 0)
                         {
                             fword = Fword.Up;
                             break;
                         }
 
-                        if (tempPos == _point)
+                        if (startPos == _point)
                         {
                             tempX = _point.X + movePoint;
                         }
@@ -183,16 +196,20 @@ namespace NecroDancer
                             tempX = _point.X - movePoint;
                         }
 
+                        if (tempX < TileManager.tileSize && tempX >= 0)
+                        {
+                            if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                            //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
+                            else
+                            {
+                                _point.X = tempX;
+                            }
+                        }
 
-                        if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
-                        {
-                            Attack();
-                        }
-                        //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
-                        else
-                        {
-                            _point.X = tempX;
-                        }
+                            
                         break;
                 }
 

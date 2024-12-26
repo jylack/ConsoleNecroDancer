@@ -30,11 +30,12 @@ namespace NecroDancer
         bool isPlayerMove = false;
 
         //들어온 값이랑 다른값이 나올때 까지 랜덤
+        Random random1 = new Random();
+        Random random2 = new Random();
 
         public Point RandomPos()//pos랑 안에서 연산해줄애랑 달라야 나옴. 
         {
-            Random random1 = new Random();
-            Random random2 = new Random();
+
 
             int rndX;
             int rndY;
@@ -82,10 +83,14 @@ namespace NecroDancer
 
             tempSpawnPos.Add(playerTempPos);
 
+            monsters.Add(new Slime(RandomPos()));
+            Thread.Sleep(1);
+            monsters.Add(new Slime(RandomPos()));
+            Thread.Sleep(1);
+            monsters.Add(new Slime(RandomPos()));
+            Thread.Sleep(1);
             monsters.Add(new Slime(RandomPos()));            
-            monsters.Add(new Slime(RandomPos()));            
-            monsters.Add(new Slime(RandomPos()));            
-            monsters.Add(new Slime(RandomPos()));            
+
 
 
             for (int i = 0; i < monsters.Count; i++)
@@ -232,8 +237,8 @@ namespace NecroDancer
                         //이동할 좌표의 타일 저장
                         //tempTileTypes.Enqueue(TileManager.tiles[tempMonsterPos.Y, tempMonsterPos.X].GetTileType());
                         tempTileTypes.Enqueue(TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType());
-                        Console.SetCursorPosition(20, 3);
-                        Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
+                        //Console.SetCursorPosition(20, 3);
+                        //Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
 
                         //이동하기 전 좌표에 이전 타일 배치.
                         TileManager.SetTile(tempPos, tempTileTypes.Dequeue());
@@ -324,22 +329,40 @@ namespace NecroDancer
         {
             TileManager.Render();
 
-            //디버깅 코드
-            Console.SetCursorPosition(20, 0);
-            if (monsters.Count > 0)
-                Console.Write($"Monster Life : {monsters[0].Life}");
+            ////디버깅 코드
+            
+            //Console.SetCursorPosition(20, 0);
+            //if (monsters.Count > 0)
+            //    Console.Write($"Monster Life : {monsters[0].Life}");
 
-            //Console.Write($"Monster X : {monster.point.X} Y : {monster.point.Y}");
-            Console.SetCursorPosition(20, 1);
-            Console.Write($"tempPos X : {tempPos.X} Y : {tempPos.Y}");
-            Console.SetCursorPosition(20, 2);
-            Console.Write($"Player Life : {Player.Life}");
-            Console.SetCursorPosition(20, 4);
-            Console.WriteLine($"몹 수 : {monsters.Count}");
-            //Console.Write($"tempPosTile: {TileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
-            //Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
-            Console.SetCursorPosition(20, 5);
-            Console.WriteLine($"{monsterPosQueue.Count}");
+            //////Console.Write($"Monster X : {monster.point.X} Y : {monster.point.Y}");
+            ////Console.SetCursorPosition(20, 1);
+            ////Console.Write($"tempPos X : {tempPos.X} Y : {tempPos.Y}");
+            ////Console.SetCursorPosition(20, 2);
+            ////Console.Write($"Player Life : {Player.Life}");
+            ////Console.SetCursorPosition(20, 4);
+            ////Console.WriteLine($"몹 수 : {monsters.Count}");
+            //////Console.Write($"tempPosTile: {TileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
+            //////Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
+            ////Console.SetCursorPosition(20, 5);
+            ////Console.WriteLine($"{monsterPosQueue.Count}");
+
+
+            Slime temp = new Slime(new Point(0,0));
+
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                temp = monsters[i] as Slime;
+                Console.SetCursorPosition(20, i);
+                Console.Write("                                                                                     ");
+                Console.SetCursorPosition(20, i);
+                Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");                
+                Console.Write($"\t방향 : {temp.fword}");
+            }
+            Console.SetCursorPosition(20,monsters.Count);
+            Console.Write($"player X :{player.point.X} Y : {player.point.Y}");
+
+
 
         }
 
