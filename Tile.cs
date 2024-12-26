@@ -86,25 +86,19 @@ namespace NecroDancer
 
     public class TileManager
     {
-        public Tile[,] tiles; //맵타일
 
-        string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+        public static int tileSize = 10;
+
+        public static Tile[,] tiles; //맵타일
+
+        static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
 
         public TileManager()
         {
-            //테스트용 10x10 맵생성
-            tiles = new Tile[10, 10];
-
-            for (int y = 0; y < 10; y++)
-            {
-                for (int x = 0; x < 10; x++)
-                {
-                    tiles[y, x] = new Tile(TileType.Floor);
-                } 
-            }
+  
         }
 
-        public void SetTile(Point point, TileType type)
+        public static void SetTile(Point point, TileType type)
         {
             tiles[point.Y, point.X] = new Tile(type);
         }
@@ -114,18 +108,27 @@ namespace NecroDancer
 
         }
 
-        public void Init()
+        public static void Init()
         {
+            //테스트용 10x10 맵생성
+            tiles = new Tile[tileSize, tileSize];
 
+            for (int y = 0; y < tileSize; y++)
+            {
+                for (int x = 0; x < tileSize; x++)
+                {
+                    tiles[y, x] = new Tile(TileType.Floor);
+                }
+            }
         }
 
-        public void Render()
+        public static void Render()
         {
             Console.SetCursorPosition(0, 0);
 
-            for (int y = 0; y < 10; y++)
+            for (int y = 0; y < tileSize; y++)
             {
-                for (int x = 0; x < 10; x++)
+                for (int x = 0; x < tileSize; x++)
                 {
                     Console.Write ( tileImage[(int)tiles[y, x].GetTileType()] );
                 }

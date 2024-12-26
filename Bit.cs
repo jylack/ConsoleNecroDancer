@@ -19,21 +19,17 @@
             get; set;
         }
 
-        //public Point GetPos()
-        //{
-        //    return new Point(X, Y);
-        //}
-
         //일일이 비교하는거 쓰기 귀찮아져서 만듬.
-        //public static bool operator ==(Point a, Point b)
-        //{
-        //    return a.X == b.X && a.Y == b.Y;
-        //}
-        //public static bool operator !=(Point a, Point b)
-        //{
-        //    return a.X != b.X && a.Y != b.Y;
-        //}
+        public static bool operator ==(Point a, Point b)
+        {
+            return a.X == b.X && a.Y == b.Y;
+        }
+        public static bool operator !=(Point a, Point b)
+        {
+            return a.X != b.X && a.Y != b.Y;
+        }
 
+        //햇갈려서 지움
         //public static bool operator >(Point a, Point b)
         //{
         //    return a.X > b.X;

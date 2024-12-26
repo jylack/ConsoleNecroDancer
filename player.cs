@@ -1,16 +1,14 @@
-﻿using ConsoleNecroDancer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NecroDancer
 {
     public class Player : Unit
     {
         int movePoint = 1;
-        bool isMove ;
+        bool isMove;
+
+        public static new int Life = 0;
+        public static new int Def = 0;
 
         public Player()
         {
@@ -19,8 +17,31 @@ namespace NecroDancer
             Def = 0;
             Lange = 1;
             _image = "ⓟ";
+            _inventory = new List<Item>();
         }
 
+       
+        public void Attack(Tile tile)
+        {
+
+        }
+
+
+
+        public void GetItme(Item item)
+        {
+            // 아이템 획득
+            _inventory.Add(item);
+        }
+
+        public override void Move()
+        {
+            throw new System.NotImplementedException();
+        }
+        public override void Move(Point point)
+        {
+            throw new System.NotImplementedException();
+        }
         public bool Move(Fword fword)
         {
 
@@ -41,7 +62,7 @@ namespace NecroDancer
                     //아래로 이동
                     _point.Y += movePoint;
                     isMove = true;
-                    if (_point.Y > 9)
+                    if (_point.Y > TileManager.tileSize - 1)
                     {
                         _point.Y -= movePoint;
                         isMove = false;
@@ -64,7 +85,7 @@ namespace NecroDancer
                     //오른쪽으로 이동
                     _point.X += movePoint;
                     isMove = true;
-                    if (_point.X > 9)
+                    if (_point.X > TileManager.tileSize - 1)
                     {
                         _point.X -= movePoint;
                         isMove = false;
@@ -75,13 +96,8 @@ namespace NecroDancer
 
             return isMove;
         }
-        public void Attack(Tile tile)
-        {
-            
-        }
 
-    
-        public void Attack(Unit target)
+        public override void Attack(Unit target)
         {
             int dmg = target.Def - Atk;
 
@@ -93,18 +109,18 @@ namespace NecroDancer
             target.Life += dmg;
         }
 
-        public void Die()
+        public override void Die()
         {
-
+            
         }
 
-        public void Spawn(Point point)
+        public override void Spawn(Point point)
         {
             _point = point;
+
         }
 
-
-        public void PopItem(Item item)
+        public override void PopItem(Item item)
         {
             if (_inventory.Contains(item))
             {
@@ -112,12 +128,12 @@ namespace NecroDancer
             }
         }
 
-        public void GetItme(Item item)
+        public override void Attack()
         {
-            // 아이템 획득
-            _inventory.Add(item);
+            
         }
 
+    
     }
 
 }

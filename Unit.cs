@@ -7,14 +7,16 @@ namespace NecroDancer
     {
         protected Point _point;
 
-        protected List<Item> _inventory = new List<Item>();
+        protected List<Item> _inventory;
 
         protected int _atk;
         protected int _life;
         protected int _def;
         protected int _lange;
-        protected string _image;
-        
+        public string _image;
+        public bool isAlive;
+
+
 
         public Unit()
         {
@@ -23,6 +25,8 @@ namespace NecroDancer
             _life = 0;
             _def = 0;
             _lange = 0;
+            _image = "　";
+            isAlive = true;
         }
 
         public Point point { get { return _point; } set { _point = value; } }
@@ -31,12 +35,16 @@ namespace NecroDancer
         public int Def { get { return _def; } set { _def = value; } }
         public int Lange { get { return _lange; } set { _lange = value; } }
 
+        public string Image { get { return _image; } }
 
-        public void Move() { }
-        public void Attack(Unit target) { }
-        public void Die() { }
-        public void Spawn() { }
-        public void PopItem() { }
+        public abstract void Move();     
+        public abstract void Move(Point point);
+
+        public abstract void Attack();
+        public abstract void Attack(Unit target);
+        public abstract void Die();
+        public abstract void Spawn(Point point);
+        public abstract void PopItem(Item item);
 
     }
 

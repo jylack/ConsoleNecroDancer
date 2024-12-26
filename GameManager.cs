@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NecroDancer
 {
@@ -25,7 +21,7 @@ namespace NecroDancer
     internal class GameManager : IManagerInterFace
     {
 
-        int height ;
+        int height;
         int width;
 
         Hart hart;
@@ -97,7 +93,7 @@ namespace NecroDancer
                     switch (input.Key)
                     {
                         case ConsoleKey.Spacebar:
-                            
+
                             break;
 
                         //방향 이동.
@@ -126,7 +122,7 @@ namespace NecroDancer
 
                 }
 
-                if(isAction) 
+                if (isAction)
                 {
 
                 }
@@ -135,7 +131,7 @@ namespace NecroDancer
                 if (sw.ElapsedMilliseconds > gameSpeed)
                 {
 
-                    hart.Addbeat(beatSpeed,hart.GetPos().Y);//비트가 움직일속도 지정                    
+                    hart.Addbeat(beatSpeed, hart.GetPos().Y);//비트가 움직일속도 지정                    
 
                     sw.Restart();
                 }
