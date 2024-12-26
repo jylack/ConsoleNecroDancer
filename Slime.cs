@@ -87,6 +87,7 @@ namespace NecroDancer
                         }
                         else
                         {
+                            //여기가 지금 문제는 맞는듯. 흠 어케해야하지?
                             tempY = _point.Y + movePoint;
                             
                         }
