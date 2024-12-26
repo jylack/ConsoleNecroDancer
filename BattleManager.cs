@@ -39,20 +39,18 @@ namespace NecroDancer
             int rndX;
             int rndY;
 
-            bool isAdd = false;
+            bool isAdd = true;
 
             Point rndPos = new Point();
 
-            while (isAdd == false)
+            while (isAdd == true)
             {
                 rndX = random1.Next(TileManager.tileSize);
                 rndY = random2.Next(TileManager.tileSize);
 
                 rndPos = new Point(rndY, rndX);
 
-
-                isAdd = tempSpawnPos.Contains(rndPos);
-           
+                isAdd = tempSpawnPos.Contains(rndPos);           
             }
 
             tempSpawnPos.Add(rndPos);
@@ -65,7 +63,7 @@ namespace NecroDancer
             monsterPosQueue = new Queue<Point>();
             tempTileTypes = new Queue<TileType>();
             monsters = new List<Monster>();
-
+            tempSpawnPos = new List<Point>();
 
             //TileManager = new TileManager();
             TileManager.Init();
@@ -82,57 +80,12 @@ namespace NecroDancer
 
             playerTempPos = new Point(0, 3);
 
-            //Random random = new Random();
-
-            //int rndX;
-            //int rndY;
-
-
-            //1
             tempSpawnPos.Add(playerTempPos);
-            //monsterPosQueue.Enqueue(playerTempPos);
+
             monsters.Add(new Slime(RandomPos()));            
             monsters.Add(new Slime(RandomPos()));            
             monsters.Add(new Slime(RandomPos()));            
             monsters.Add(new Slime(RandomPos()));            
-
-
-
-
-
-            //2
-            //while (monsterPosQueue.Count > 0)
-            //{
-            //    rndX = random.Next(TileManager.tileSize);
-            //    Thread.Sleep(1);
-            //    rndY = random.Next(TileManager.tileSize);
-
-            //    monsterSpawnPos = new Point(rndY, rndX);
-
-            //    if (monsterPosQueue.Peek() != monsterSpawnPos)
-            //    {
-            //        monsterPosQueue.Dequeue();
-            //    }
-            //}
-
-            //monsters.Add(new Slime(monsterSpawnPos));
-
-            ////3
-            //rndX = random.Next(TileManager.tileSize);
-            //Thread.Sleep(1);
-            //rndY = random.Next(TileManager.tileSize);
-
-            //monsterSpawnPos = new Point(rndY, rndX);
-            //monsters.Add(new Slime(monsterSpawnPos));
-
-            ////4
-            //rndX = random.Next(TileManager.tileSize);
-            //Thread.Sleep(1);
-            //rndY = random.Next(TileManager.tileSize);
-
-            //monsterSpawnPos = new Point(rndY, rndX);
-            //monsters.Add(new Slime(monsterSpawnPos));
-
 
 
             for (int i = 0; i < monsters.Count; i++)
@@ -146,11 +99,7 @@ namespace NecroDancer
 
             playerTempTile = TileManager.tiles[playerTempPos.Y, playerTempPos.X].GetTileType();
 
-            //monster.Spawn(monsterSpawnPos);
             player.Spawn(playerTempPos);
-
-            //tempPos = monster.point;
-            //playerTempPos = monster.point;
 
 
         }

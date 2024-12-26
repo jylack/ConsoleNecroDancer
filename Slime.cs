@@ -27,7 +27,7 @@ namespace NecroDancer
             _life = 1;
             isAtkMonster = random.Next(0, 2) == 0 ? true : false; // 0이면 true 1이면 false 공격가능 불가능 설정.
                                                                   //슬라임 하나로 두종류 공격가능한애 못한애 사용
-
+            isAtkMonster = true;
             //이런식으로 생성자에서 같은몬스터 여러타입으로 나눌수있나 테스트
             if (isAtkMonster)
             {
