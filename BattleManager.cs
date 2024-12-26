@@ -150,7 +150,12 @@ namespace NecroDancer
 
             for (int i = 0; i < monsters.Count; i++)
             {
-                if (monsters[i].isAlive)
+                if (monsters[i].isAlive == false)
+                {
+                    continue;
+                }
+
+                if (monsters[i].Life > 0)
                 {
 
                     //임시 좌표에 몬스터 좌표 넣어둠.

@@ -367,7 +367,7 @@ namespace NecroDancer
         public override void Spawn(Point point)
         {
             _point = point;
-
+            isAlive = true;
 
         }
 
