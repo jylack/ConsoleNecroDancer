@@ -75,16 +75,24 @@ namespace NecroDancer
 
             return isMove;
         }
-
-        public void Attack(Point target)
+        public void Attack(Tile tile)
         {
-
+            
         }
 
+    
         public void Attack(Unit target)
         {
+            int dmg = target.Def - Atk;
 
+            if (dmg > 0)
+            {
+                dmg = 0;
+            }
+
+            target.Life += dmg;
         }
+
         public void Die()
         {
 

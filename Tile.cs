@@ -111,6 +111,7 @@ namespace NecroDancer
 
         public void Update()
         {
+
         }
 
         public void Init()

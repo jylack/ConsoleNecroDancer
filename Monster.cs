@@ -6,15 +6,15 @@ namespace NecroDancer
 {
     public class Monster : Unit
     {
-        bool isAttack = false;
+        
         int movePoint = 1;
         int count = 0;
-        public bool isMove = true;
 
+        public bool isMove = true;
 
         public Monster()
         {
-            _atk = 0;
+            _atk = 1;
             _life = 0;
             _def = 0;
             _lange = 0;
@@ -251,6 +251,10 @@ namespace NecroDancer
             //    isMove = false;
             //}
             #endregion
+
+            //공격할떈 안움직여야함.
+
+
             if (isMove)
             {
                 _point = point;
@@ -310,20 +314,23 @@ namespace NecroDancer
             }
 
 
-            if (isAttack)
-            {
-                //공격
-                Attack(target);
-            }
+            
             //Console.WriteLine(count);
         }
         public void Attack(Unit target)
         {
 
+            int dmg = target.Def -Atk;
+
+            //방어도가 공격에 비해 너무 높아서 오히려 체력체우는거 방지용
+            if (dmg > 0)
+            {
+                dmg = 0;
+            }
+
+            target.Life += dmg;
 
         }
-
-
 
         public void Die()
         {
@@ -340,7 +347,7 @@ namespace NecroDancer
             else
             {
                 //골드 드롭
-                DropGold(_point, gold);
+                DropGold( gold);
             }
 
         }
@@ -352,10 +359,10 @@ namespace NecroDancer
         }
 
 
-        public Item DropGold(Point point, int gold)
+        public Item DropGold(int gold)
         {
             //골드 드롭
-            Gold dropgold = new Gold(point, gold);
+            Gold dropgold = new Gold(_point, gold);
 
             return dropgold;
         }
