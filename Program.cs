@@ -17,14 +17,6 @@ namespace ConsoleNecroDancer
             gameManager.Init();
             Console.CursorVisible = false;
 
-            //TileManager TileManager = new TileManager();
-
-            //foreach(var item in TileManager.tileImage)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-
             while (true)
             {
                 gameManager.Update();

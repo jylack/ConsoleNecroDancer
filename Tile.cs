@@ -87,11 +87,17 @@ namespace NecroDancer
     public class TileManager
     {
 
-        public static int tileSize = 10;
+        public static int tileSize = 5;
 
         public static Tile[,] tiles; //맵타일
+        public static Tile[,] originTiles; //맵타일
 
         static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+
+        public static string[] GetImage
+        {
+            get { return  tileImage; }
+        }
 
         public TileManager()
         {
@@ -101,6 +107,7 @@ namespace NecroDancer
         public static void SetTile(Point point, TileType type)
         {
             tiles[point.Y, point.X] = new Tile(type);
+          //  originTiles[point.Y, point.X] = new Tile(type);
         }
 
         public void Update()
@@ -118,6 +125,7 @@ namespace NecroDancer
                 for (int x = 0; x < tileSize; x++)
                 {
                     tiles[y, x] = new Tile(TileType.Floor);
+                   // originTiles[y, x] = new Tile(TileType.Floor);
                 }
             }
         }

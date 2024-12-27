@@ -1,4 +1,6 @@
-﻿namespace NecroDancer
+﻿using System.Runtime.CompilerServices;
+
+namespace NecroDancer
 {
     public struct Point
     {

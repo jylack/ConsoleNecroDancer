@@ -10,6 +10,7 @@ namespace NecroDancer
 
         public bool isSerch = false;
         public bool isMove = true;
+        public TileType type = TileType.Monster;
 
         public Monster()
         {
@@ -18,6 +19,7 @@ namespace NecroDancer
             _def = 0;
             _lange = 0;
             _image = "ⓜ";
+
             count++;
         }
 
@@ -428,7 +430,7 @@ namespace NecroDancer
                 dmg = 0;
             }
 
-            Player.Life -= dmg; 
+            Player.Life += dmg; 
         }
 
         public override void Move(Point point)
