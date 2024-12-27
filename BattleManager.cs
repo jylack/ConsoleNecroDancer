@@ -17,8 +17,10 @@ namespace NecroDancer
         List<Monster> monsters;//나중에 몬스터들 여기다 다 넣을거임.
 
         Point monsterSpawnPos;//나중에 랜덤으로 몬스터 생성할때 재활용 할 좌표
-        Point tempPos;
         Point playerTempPos;
+
+        Point monsterNextPos;//몬스터 다음좌표 가지고있음.
+        Point monsterPrevPos;//몬스터 이전좌표 가지고있음.
 
         TileType playerTempTile; // 멥에 변동이 생겼을때 원래 가지고있던 타일값 저장하는 용도.
 
@@ -51,7 +53,7 @@ namespace NecroDancer
 
                 rndPos = new Point(rndY, rndX);
 
-                isAdd = tempSpawnPos.Contains(rndPos);           
+                isAdd = tempSpawnPos.Contains(rndPos);
             }
 
             tempSpawnPos.Add(rndPos);
@@ -61,7 +63,7 @@ namespace NecroDancer
 
         public void Init()
         {
-            monsterPosQueue = new Queue<Point>();
+            //monsterPosQueue = new Queue<Point>();
             tempTileTypes = new Queue<TileType>();
             monsters = new List<Monster>();
             tempSpawnPos = new List<Point>();
@@ -73,13 +75,11 @@ namespace NecroDancer
 
             //monster = new Monster();
 
-
+            monsterNextPos = new Point();
+            playerTempPos = new Point(0, 3);
 
             dropItemList = new List<Item>();
 
-            tempPos = new Point(0, 0);
-
-            playerTempPos = new Point(0, 3);
 
             tempSpawnPos.Add(playerTempPos);
 
@@ -89,7 +89,7 @@ namespace NecroDancer
             Thread.Sleep(1);
             monsters.Add(new Slime(RandomPos()));
             Thread.Sleep(1);
-            monsters.Add(new Slime(RandomPos()));            
+            monsters.Add(new Slime(RandomPos()));
 
 
 
@@ -168,24 +168,15 @@ namespace NecroDancer
 
 
                 }
-                //아마 타일이 공격가능한경우도 넣어야할듯.우선순위는 몬스터인듯?
-                else
-                {
-                    TileManager.SetTile(playerTempPos, playerTempTile);//지나간자리 초기화
-
-
-                    TileManager.SetTile(player.point, TileType.Player);
-                    playerTempTile = TileManager.tiles[playerTempPos.Y, playerTempPos.X].GetTileType();
-                }
-
             }
 
             #endregion
 
             #region 몬스터이동
-           
+
             Queue<int> indexs = new Queue<int>();
             string image;
+
 
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -198,9 +189,8 @@ namespace NecroDancer
 
                 if (monsters[i].Life > 0)
                 {
-
-                    //임시 좌표에 몬스터 좌표 넣어둠.
-                    tempPos = monsters[i].point;
+                    //이전좌표 저장
+                    monsterPrevPos = monsters[i].point;
 
                     image = monsters[i].Image;
 
@@ -217,7 +207,9 @@ namespace NecroDancer
                         case "ⓢ"://슬라임 -혼자 노는녀석
                             Slime slime = monsters[i] as Slime;
                             slime.Move();
-                            monsterPosQueue.Enqueue(slime.point);
+                            //다음좌표 저장
+                            monsterNextPos = slime.point;
+
                             //tempMonsterPos = slime.point;
                             break;
 
@@ -226,165 +218,126 @@ namespace NecroDancer
                             break;
 
                     }
+
+
+
                     //임시 좌표로 몬스터 이동 가능한 지역인가 탐색
 
-                    //해당 위치가 플레이어가 아닌가?
-                    //if (TileManager.tiles[tempMonsterPos.Y, tempMonsterPos.X].GetTileType() != TileType.Player)
-                    if (TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() != TileType.Player &&
-                        TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() != TileType.Monster)
+                    //해당 위치가 플레이어가 아닌가? 그리고 바닥인가? 에대한 체크
+                    if (monsterNextPos != player.point && 
+                        TileManager.tiles[monsterNextPos.Y,monsterNextPos.X].GetTileType() == TileType.Floor)
                     {
-                        //이동할 좌표의 타일 저장
-                        //tempTileTypes.Enqueue(TileManager.tiles[tempMonsterPos.Y, tempMonsterPos.X].GetTileType());
-                        tempTileTypes.Enqueue(TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType());
-                        //Console.SetCursorPosition(20, 3);
-                        //Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
-
-                        //이동하기 전 좌표에 이전 타일 배치.
-                        TileManager.SetTile(tempPos, tempTileTypes.Dequeue());
-
                         //다음 좌표로 몬스터 이동.
-                        monsters[i].Move(monsterPosQueue.Dequeue());
-                        //monsters[i].Move(tempMonsterPos);
-
-                        //몬스터 이동한 위치에 몬스터 그려주기.                
-                        TileManager.SetTile(monsters[i].point, TileType.Monster);
-
-
-                        //switch (image)
-                        //{
-                        //    case "ⓜ":                               
-                        //        break;
-                        //    case "ⓢ":
-                        //        break;
-                        //    case "ⓚ":
-                        //        break;
-                        //}
+                        monsters[i].Move(monsterNextPos);
                     }
                     //이동 불가지역임. 나중에 몬스터별로 행동다르게 할지도
-                    //else if (TileManager.tiles[tempMonsterPos.Y, tempMonsterPos.X].GetTileType() == TileType.Player)
-                    else if (TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() == TileType.Player)
+                    else if (monsterNextPos == player.point)
                     {
-
                         monsters[i].Attack();
-
-                        monsterPosQueue.Dequeue();
-
+                        monsters[i].point = monsterPrevPos;
                     }
-                    else if(TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() == TileType.Monster)
-                    {                                               
-                        switch (image)
-                        {
-                            case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
-                                     //이런식으로 바꿔서 해주면될듯
-                                     //Monster temp =  monsters[i] as Monster;
-                                     //temp.TempMovePos(player, tempPos);
+                    
 
-                                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
-                                //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
-                                break;
-                            case "ⓢ"://슬라임 -혼자 노는녀석
-                                Slime slime = monsters[i] as Slime;
-                                slime.fword = (Fword)random1.Next((int)Fword.start+1, (int)Fword.end);
-                                //tempMonsterPos = slime.point;
-                                break;
+                    //for (int j = 0; j < monsters.Count; j++)
+                    //{
+                    //    if (monsterNextPos == monsters[j].point)
+                    //    {
+                    //        switch (image)
+                    //        {
+                    //            case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
+                    //                     //이런식으로 바꿔서 해주면될듯
+                    //                     //Monster temp =  monsters[i] as Monster;
+                    //                     //temp.TempMovePos(player, tempPos);
 
-                            case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
+                    //                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
+                    //                //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
+                    //                break;
+                    //            case "ⓢ"://슬라임 -혼자 노는녀석
+                    //                Slime slime = monsters[i] as Slime;
+                    //                slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
 
-                                break;
+                    //                //tempMonsterPos = slime.point;
+                    //                break;
 
-                        }
-                        monsterPosQueue.Dequeue();
-                    }
-                    else
-                    {
-                        //몬스터 미리움직인 좌표 지움 다음을위해서.
-                        monsterPosQueue.Dequeue();
-                    }
+                    //            case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
 
+                    //                break;
+
+                    //        }
+
+                            
+                    //    }
+                    //}
 
 
                 }
-                //몬스터 다죽음
-                //지금은 몬스터 죽은 뒤처릴 어케할건가에 대한 고민
                 else
                 {
                     monsters[i].Die();
                     indexs.Enqueue(i);
 
                 }
-            }
-            if (indexs.Count > 0)
-            {
 
-                if (monsters[indexs.Peek()].isAlive == false)
-                {
-                    monsters.RemoveAt(indexs.Dequeue());
-                }
+
+
             }
+
+        }
+            //디버그용으로 주석중
+            //if (indexs.Count > 0)
+            //{
+
+            //    if (monsters[indexs.Peek()].isAlive == false)
+            //    {
+            //        monsters.RemoveAt(indexs.Dequeue());
+            //    }
+            //}
 
 
             #endregion
-
-
-
-
-
-
-
-            //if (tempPos != player.point)
-            //{
-            //    //이동할 좌표 저장해둔거 넘김.
-            //    monster.Move(player, tempPos);
-
-
-
-            //    TileManager.SetTile(tempPos, tempTile);//지나간자리 초기화
-            //                                            //TileManager.SetTile(tempPos, TileType.Floor);//지나간자리 초기화
-
-            //    TileManager.SetTile(monster.point, TileType.Monster);
-
-            //    tempTile = TileManager.tiles[tempPos.Y, tempPos.X].GetTileType();
-            //    //TileManager.SetTile(tempPos, tempTile);//지나간자리 초기화
-
-            //}
-        }
+        
 
         public void Render()
         {
-            TileManager.Render();
 
             ////디버깅 코드
-            
-            //Console.SetCursorPosition(20, 0);
-            //if (monsters.Count > 0)
-            //    Console.Write($"Monster Life : {monsters[0].Life}");
+            Slime temp = new Slime(new Point(0, 0));
 
-            //////Console.Write($"Monster X : {monster.point.X} Y : {monster.point.Y}");
-            ////Console.SetCursorPosition(20, 1);
-            ////Console.Write($"tempPos X : {tempPos.X} Y : {tempPos.Y}");
-            ////Console.SetCursorPosition(20, 2);
-            ////Console.Write($"Player Life : {Player.Life}");
-            ////Console.SetCursorPosition(20, 4);
-            ////Console.WriteLine($"몹 수 : {monsters.Count}");
-            //////Console.Write($"tempPosTile: {TileManager.tiles[tempPos.Y,tempPos.X].GetTileType()}");
-            //////Console.Write($"tempPosTile: {tempTileTypes.Peek()}");
-            ////Console.SetCursorPosition(20, 5);
-            ////Console.WriteLine($"{monsterPosQueue.Count}");
-
-
-            Slime temp = new Slime(new Point(0,0));
+            for (int i = 0; i < 5; i++)
+            {
+                Console.SetCursorPosition(20, i);
+                Console.Write("                                                                                           ");
+            }
 
             for (int i = 0; i < monsters.Count; i++)
             {
                 temp = monsters[i] as Slime;
                 Console.SetCursorPosition(20, i);
-                Console.Write("                                                                                     ");
-                Console.SetCursorPosition(20, i);
-                Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");                
-                Console.Write($"\t방향 : {temp.fword}");
+                Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");
+                Console.Write($"\t방향 : {temp.fword} \t HP : {temp.Life} \t 생존: {temp.isAlive}");
             }
-            Console.SetCursorPosition(20,monsters.Count);
-            Console.Write($"player X :{player.point.X} Y : {player.point.Y}");
+
+
+
+            Console.SetCursorPosition(20, 5);
+            Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
+            ///
+
+            //여기부터 본진코드
+            TileManager.Init();
+
+
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i].isAlive == true)
+                    TileManager.SetTile(monsters[i].point, monsters[i].type);
+            }
+
+            TileManager.SetTile(player.point, TileType.Player);
+
+            TileManager.Render();
+
+
 
 
 

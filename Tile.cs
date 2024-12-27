@@ -87,12 +87,17 @@ namespace NecroDancer
     public class TileManager
     {
 
-        public static int tileSize = 10;
+        public static int tileSize = 5;
 
         public static Tile[,] tiles; //맵타일
         public static Tile[,] originTiles; //맵타일
 
         static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+
+        public static string[] GetImage
+        {
+            get { return  tileImage; }
+        }
 
         public TileManager()
         {

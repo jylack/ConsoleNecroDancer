@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NecroDancer
 {
@@ -107,6 +108,8 @@ namespace NecroDancer
             }
 
             target.Life += dmg;
+            Console.SetCursorPosition(20, 10);
+            Console.WriteLine($"dmg : {dmg} 몬스터 잔여hp : {target.Life}");
         }
 
         public override void Die()

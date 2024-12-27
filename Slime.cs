@@ -18,7 +18,7 @@ namespace NecroDancer
 
             _point = point;
 
-            startPos = _point;//처음좌표 알아야함. 왓다갓다만할거라서.
+            startPos = point;//처음좌표 알아야함. 왓다갓다만할거라서.
 
             _image = "ⓢ";
             _atk = 1;
@@ -40,29 +40,6 @@ namespace NecroDancer
 
         public override void Move()
         {
-
-            //int tempUY = 0;//위로
-            //int tempDY = 0;//아래로
-            //int tempLX = 0;//왼쪽
-            //int tempRX = 0;//오른쪽
-
-            //int moveCount = 0;
-
-            //tempUY = (_point.Y - movePoint) > 0 ? (_point.Y - movePoint) : 0;
-            //moveCount += tempUY == 0 ? 0 : 1;
-
-            //tempDY = (_point.Y + movePoint) < 9 ? (_point.Y + movePoint) : 9;
-            //moveCount += tempDY == 9 ? 0 : 1;
-
-            //tempLX = (_point.X - movePoint) > 0 ? (_point.X - movePoint) : 0;
-            //moveCount += tempLX == 0 ? 0 : 1;
-
-            //tempRX = (_point.X + movePoint) < 9 ? (_point.X + movePoint) : 9;
-            //moveCount += tempRX == 9 ? 0 : 1;
-
-
-            //fword = (Fword)random.Next(0, moveCount);
-
             int tempY;
             int tempX ;
 
@@ -77,8 +54,7 @@ namespace NecroDancer
                     case Fword.Up:
                         if (_point.Y - movePoint < 0)
                         {
-                            fword = Fword.Down;
-                            
+                            fword = Fword.Down;                            
                         }
 
                         if (startPos == _point)
@@ -152,7 +128,6 @@ namespace NecroDancer
                         {
                             fword = Fword.Right;
 
-                            break;
                         }
 
 
@@ -184,7 +159,7 @@ namespace NecroDancer
                         if (_point.X + movePoint > TileManager.tileSize - 1)
                         {
                             fword = Fword.Left;
-                            break;
+                            
                         }
 
 
