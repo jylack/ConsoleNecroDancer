@@ -34,7 +34,7 @@ namespace NecroDancer
                 _life = 2;//움직이는 녀석 체력 2
             }
 
-            fword = (Fword)random.Next((int)Fword.start, (int)Fword.end);//0~3까지 행동값있음. 아무방향으로 정해줌
+            fword = (Fword)random.Next((int)Fword.start +1, (int)Fword.end);//0~3까지 행동값있음. 아무방향으로 정해줌
 
         }
 
@@ -87,7 +87,8 @@ namespace NecroDancer
                         }
                         else if(startPos.Y == _point.Y + movePoint)
                         {
-                            //여기가 지금 문제는 맞는듯. 흠 어케해야하지?                            
+                            //여기가 지금 문제는 맞는듯. 흠 어케해야하지?
+                            //
                             tempY = _point.Y + movePoint;                            
                         }
                         else

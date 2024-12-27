@@ -183,9 +183,7 @@ namespace NecroDancer
             #endregion
 
             #region 몬스터이동
-
-            Point tempMonsterPos = new Point();
-            //int index=0;
+           
             Queue<int> indexs = new Queue<int>();
             string image;
 
@@ -286,7 +284,7 @@ namespace NecroDancer
                                 break;
                             case "ⓢ"://슬라임 -혼자 노는녀석
                                 Slime slime = monsters[i] as Slime;
-                                slime.fword = (Fword)random1.Next((int)Fword.start, (int)Fword.end);
+                                slime.fword = (Fword)random1.Next((int)Fword.start+1, (int)Fword.end);
                                 //tempMonsterPos = slime.point;
                                 break;
 
