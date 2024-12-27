@@ -385,14 +385,14 @@ namespace NecroDancer
             //}
             */
 
-            for(int viewX = -player.viewPoint; viewX <= player.viewPoint; viewX++)
+            for(int viewX = -player.viewPoint; viewX < player.viewPoint; viewX++)
             {
-                for(int viewY = -player.viewPoint; viewY <= player.viewPoint; viewY++)
+                for(int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
                 {
                     int newX = player.point.X + viewX;
                     int mewY = player.point.Y + viewY;
 
-                    if(Math.Abs(viewX) + Math.Abs(viewY) <= player.viewPoint)
+                    if(Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
                     {
                         if(newX >= 0 && newX < TileManager.tileSize &&
                             mewY >= 0 && mewY < TileManager.tileSize)
