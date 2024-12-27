@@ -15,7 +15,7 @@ namespace NecroDancer
         protected int _lange;
         public string _image;
         public bool isAlive;
-
+        public TileType type;
 
 
         public Unit()

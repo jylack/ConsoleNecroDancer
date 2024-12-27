@@ -37,6 +37,7 @@ namespace NecroDancer
         public int Atk { get { return _atk; }}
         public int Def { get { return _def; }}
 
+        public bool isView;
 
         public Tile()
         {
@@ -44,6 +45,7 @@ namespace NecroDancer
             _hp = 0;
             _atk = 0;
             _def = 0;
+            isView = false;
         }
 
         public Tile(TileType type)
@@ -87,12 +89,12 @@ namespace NecroDancer
     public class TileManager
     {
 
-        public static int tileSize = 5;
+        public static int tileSize = 10;
 
         public static Tile[,] tiles; //맵타일
         public static Tile[,] originTiles; //맵타일
 
-        static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+        static string[] tileImage = { " ", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
 
         public static string[] GetImage
         {
@@ -138,7 +140,14 @@ namespace NecroDancer
             {
                 for (int x = 0; x < tileSize; x++)
                 {
-                    Console.Write ( tileImage[(int)tiles[y, x].GetTileType()] );
+                    if (tiles[y, x].isView)
+                    {
+                        Console.Write(tileImage[(int)tiles[y, x].GetTileType()]);
+                    }
+                    else
+                    {
+                        Console.Write(tileImage[0]);//여백 혹은 나중에 다르게표현할지도?
+                    }
                 }
                 Console.WriteLine();
             }

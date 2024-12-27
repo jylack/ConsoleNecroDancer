@@ -38,6 +38,164 @@ namespace NecroDancer
 
         }
 
+        public Point NextMove()
+        {
+            int tempY = 0;
+            int tempX = 0;
+
+
+
+            //공격가능한애
+            if (isAtkMonster)
+            {
+
+                switch (fword)
+                {
+                    case Fword.Up:
+                        if (_point.Y - movePoint < 0)
+                        {
+                            fword = Fword.Down;
+                        }
+
+                        if (startPos == _point)
+                        {
+                            tempY = _point.Y - movePoint;
+                            
+                 
+                        }
+                        else if (startPos.Y == _point.Y + movePoint)
+                        {
+                            //여기가 지금 문제는 맞는듯. 흠 어케해야하지?
+                            //
+                            tempY = _point.Y + movePoint;
+                        }
+                        else
+                        {
+                            tempY = _point.Y;
+                        }
+
+                        if (tempY < TileManager.tileSize && tempY >= 0)
+                        {
+                            if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+                            {
+                                //몬스터가 공격.
+                                Attack();
+                            }
+                            //플레이어나 벽이나 뭔가 특수한게 아니면 이동.
+                        }
+
+                        break;
+
+                    case Fword.Down:
+
+                        if (_point.Y + movePoint > TileManager.tileSize - 1)
+                        {
+                            fword = Fword.Up;
+
+                        }
+
+
+
+                        if (startPos == _point)
+                        {
+                            tempY = _point.Y + movePoint;
+                        }
+                        else
+                        {
+                            tempY = _point.Y - movePoint;
+                        }
+
+
+                        if (tempY < TileManager.tileSize && tempY >= 0)
+                        {
+
+                            if (TileManager.tiles[tempY, _point.X].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                        }
+                        break;
+
+                    case Fword.Left:
+                        if (_point.X - movePoint < 0)
+                        {
+                            fword = Fword.Right;
+
+                        }
+
+
+                        if (startPos == _point)
+                        {
+                            tempX = _point.X - movePoint;
+                        }
+                        else
+                        {
+                            tempX = _point.X + movePoint;
+                        }
+                        if (tempX < TileManager.tileSize && tempX >= 0)
+                        {
+                            if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                        }
+
+
+                        break;
+
+                    case Fword.Right:
+                        if (_point.X + movePoint > TileManager.tileSize - 1)
+                        {
+                            fword = Fword.Left;
+
+                        }
+
+
+                        if (startPos == _point)
+                        {
+                            tempX = _point.X + movePoint;
+                        }
+                        else
+                        {
+                            tempX = _point.X - movePoint;
+                        }
+
+                        if (tempX < TileManager.tileSize && tempX >= 0)
+                        {
+                            if (TileManager.tiles[_point.Y, tempX].GetTileType() == TileType.Player)
+                            {
+                                Attack();
+                            }
+                        }
+
+
+                        break;
+                }
+
+
+            }
+
+            if (tempY < 0)
+                tempY = 0;
+            
+            if (tempX <- 0)
+                tempX = 0;
+
+            if (tempY >= TileManager.tileSize)
+                tempY = TileManager.tileSize-1;
+
+            if (tempX >= TileManager.tileSize)
+                tempX = TileManager.tileSize-1;
+
+
+            if (tempX + tempY == 0)
+            {
+                Console.WriteLine("먼가잘못됨");
+            }
+
+            return new Point(tempX, tempY);
+        }
+
         public override void Move()
         {
             int tempY;

@@ -11,6 +11,8 @@ namespace NecroDancer
         public static new int Life = 0;
         public static new int Def = 0;
 
+        public int viewPoint;
+
         public Player()
         {
             Life = 4;
@@ -18,6 +20,12 @@ namespace NecroDancer
             Def = 0;
             Lange = 1;
             _image = "ⓟ";
+            
+            type = TileType.Player;
+            
+            viewPoint = 3;
+
+
             _inventory = new List<Item>();
         }
 
