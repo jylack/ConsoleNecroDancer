@@ -12,10 +12,12 @@ namespace NecroDancer
 
     public enum Fword
     {
+        start,
         Up,
         Down,
         Left,
-        Right
+        Right,
+        end
     }
 
     internal class GameManager : IManagerInterFace

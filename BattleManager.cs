@@ -187,6 +187,7 @@ namespace NecroDancer
             Point tempMonsterPos = new Point();
             //int index=0;
             Queue<int> indexs = new Queue<int>();
+            string image;
 
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -203,7 +204,7 @@ namespace NecroDancer
                     //임시 좌표에 몬스터 좌표 넣어둠.
                     tempPos = monsters[i].point;
 
-                    string image = monsters[i].Image;
+                    image = monsters[i].Image;
 
                     switch (image)
                     {
@@ -270,6 +271,31 @@ namespace NecroDancer
 
                         monsterPosQueue.Dequeue();
 
+                    }
+                    else if(TileManager.tiles[monsterPosQueue.Peek().Y, monsterPosQueue.Peek().X].GetTileType() == TileType.Monster)
+                    {                                               
+                        switch (image)
+                        {
+                            case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
+                                     //이런식으로 바꿔서 해주면될듯
+                                     //Monster temp =  monsters[i] as Monster;
+                                     //temp.TempMovePos(player, tempPos);
+
+                                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
+                                //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
+                                break;
+                            case "ⓢ"://슬라임 -혼자 노는녀석
+                                Slime slime = monsters[i] as Slime;
+                                slime.fword = (Fword)random1.Next((int)Fword.start, (int)Fword.end);
+                                //tempMonsterPos = slime.point;
+                                break;
+
+                            case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
+
+                                break;
+
+                        }
+                        monsterPosQueue.Dequeue();
                     }
                     else
                     {
