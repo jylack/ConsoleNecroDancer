@@ -20,11 +20,11 @@ namespace NecroDancer
         end
     }
 
-    internal class GameManager : IManagerInterFace
+    public class GameManager : IManagerInterFace
     {
 
-        int height;
-        int width;
+        static int height;
+        static int width;
 
         Hart hart;
 
@@ -35,7 +35,7 @@ namespace NecroDancer
         public static ConsoleKeyInfo input;
 
 
-        public static bool isGameStart = true;
+        public static bool isGameStart = false;
 
         int beatSpeed = 1;
 
@@ -43,15 +43,21 @@ namespace NecroDancer
 
         int gameSpeed = 600; // 0.6초당 박자 움직이기
 
-        bool isAction = false;
+        public bool isAction = false;
 
+        static string strClear = "";
 
         public void Init()
         {
 
-            height = Console.WindowHeight;
+            height = 20;
             width = Console.WindowWidth / 2 - 3;
-            hart = new Hart(new Point(width, 20), (int)Difficulty.Normal);
+            hart = new Hart(new Point(width, height), (int)Difficulty.Normal);
+
+            for (int i = 0; i < Console.WindowWidth-1; i++)
+            {
+                strClear += " ";
+            }
 
         }
 
@@ -72,7 +78,7 @@ namespace NecroDancer
                 isAction = false;
             }
 
-            isGameStart = false;
+           // isGameStart = false;
 
         }
 
@@ -85,7 +91,7 @@ namespace NecroDancer
 
             beatWatch.Start();
 
-            while (isGameStart)
+            //while (isGameStart)
             {
 
                 if (Console.KeyAvailable)
@@ -123,6 +129,10 @@ namespace NecroDancer
                     }
 
                 }
+                else
+                {
+
+                }
 
                 if (isAction)
                 {
@@ -154,7 +164,7 @@ namespace NecroDancer
             if (beatWatch.ElapsedMilliseconds > 100)
             {
                 //Console.Clear();
-                ConSoleClear();
+                //ConSoleClear();
 
                 if (hart.Isbeats())
                 {
@@ -171,17 +181,22 @@ namespace NecroDancer
 
                 beatWatch.Restart();
 
-                hart.Print();
+                hart.Render();
                 Console.WriteLine();
                 Console.WriteLine(combo);
 
             }
         }
 
-        public void ConSoleClear()
+        public static void ConSoleClear()
         {
-            Console.SetCursorPosition(0, hart.GetPos().Y);
-            Console.WriteLine("                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \n");
+            
+            for(int i = height; i <= height; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(strClear);
+            }
+
         }
 
     }

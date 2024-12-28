@@ -7,10 +7,10 @@ namespace NecroDancer
     {
         Point _point;
         int _len;
-        Queue<Beat> beats;
+        Queue<Beat> beats;//들어온 순서대로 나가야해서 큐씀
         string _image = "[     ]";
         int size;
-
+        int width;//너비 위치
 
         public Hart(Point point, int difficulty)
         {
@@ -27,7 +27,10 @@ namespace NecroDancer
 
             _len = difficulty;
 
+            width = Console.WindowWidth / 4;
         }
+
+        public int Size { get { return size; } }
 
         public Point GetPos()
         {
@@ -36,9 +39,10 @@ namespace NecroDancer
 
         public void Addbeat(int speed ,int posY)
         {
-
-            beats.Enqueue(new Beat(new Point(0, posY), speed, true)); //왼쪽
-            beats.Enqueue(new Beat(new Point(Console.WindowWidth, posY), speed, false));//오른쪽 추가
+            //왼쪽
+            beats.Enqueue(new Beat(new Point(width, posY), speed, true));
+            //오른쪽
+            beats.Enqueue(new Beat(new Point(Console.WindowWidth - width, posY), speed, false));
         }
 
         public void Removebeats()
@@ -96,7 +100,7 @@ namespace NecroDancer
             return false;
         }
 
-        public void Print()
+        public void Render()
         {
             Console.SetCursorPosition(_point.X, _point.Y);
             Console.WriteLine(_image);

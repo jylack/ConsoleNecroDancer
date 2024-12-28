@@ -30,10 +30,13 @@ namespace NecroDancer
         Queue<TileType> tempTileTypes;//몬스터들 이동할 타일 미리저장해둠.
 
         bool isPlayerMove = false;
+        bool isAction = false;
 
         //들어온 값이랑 다른값이 나올때 까지 랜덤
         Random random1 = new Random();
         Random random2 = new Random();
+        
+        ConsoleKeyInfo input;
 
         public Point RandomPos()//pos랑 안에서 연산해줄애랑 달라야 나옴. 
         {
@@ -59,6 +62,10 @@ namespace NecroDancer
             tempSpawnPos.Add(rndPos);
 
             return rndPos;
+        }
+        public void SetAction(bool Action)
+        {
+            isAction = Action;
         }
 
         public void Init()
@@ -91,7 +98,7 @@ namespace NecroDancer
             Thread.Sleep(1);
             monsters.Add(new Slime(RandomPos()));
 
-
+            input = new ConsoleKeyInfo();
 
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -115,7 +122,7 @@ namespace NecroDancer
             //    posList.Add(monsters[i].point);
             //}
 
-           // PosListAdd();
+            // PosListAdd();
         }
 
         //public void PosListAdd()
@@ -133,56 +140,52 @@ namespace NecroDancer
 
         public void Update()
         {
-            GameManager.isGameStart = true;
+            //GameManager.isGameStart = true;
 
             #region 플레이어이동
-            
-            
+
+            //하트 인식 잘들어왔나 디버깅용
+            //Console.SetCursorPosition(15,15);
+            //Console.WriteLine(isAction);
 
             if (isPlayerMove)//이동해서 플레이어 좌표가 변하기 전의 정보를 넣어줘야함. 안그럼 타일에 정보남음.
             {
                 playerTempPos = player.point;
             }
 
-            switch (GameManager.input.Key)
+
+            
+            //if (isAction)            
             {
-                //방향 이동.
-                case ConsoleKey.A:
-                case ConsoleKey.LeftArrow:
+            
+                switch (GameManager.input.Key)
+                {
+                    //방향 이동.
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
 
-                    isPlayerMove = player.Move(Fword.Left);
+                        isPlayerMove = player.Move(Fword.Left);
 
-                    break;
-                case ConsoleKey.RightArrow:
-                case ConsoleKey.D:
-                    isPlayerMove = player.Move(Fword.Right);
-
-
-                    break;
-                case ConsoleKey.UpArrow:
-                case ConsoleKey.W:
-                    isPlayerMove = player.Move(Fword.Up);
+                        break;
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.D:
+                        isPlayerMove = player.Move(Fword.Right);
 
 
-                    break;
-                case ConsoleKey.S:
-                case ConsoleKey.DownArrow:
-                    isPlayerMove = player.Move(Fword.Down);
+                        break;
+                    case ConsoleKey.UpArrow:
+                    case ConsoleKey.W:
+                        isPlayerMove = player.Move(Fword.Up);
 
-                    break;
+
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        isPlayerMove = player.Move(Fword.Down);
+
+                        break;
+                }
             }
-
-
-            //int plyindex = posList.IndexOf(player.point);
-            //bool isPlyAtk = false;
-
-            //for(int i = 0; i < posList.Count; i++)
-            //{
-            //    if(i != plyindex)
-            //    {
-            //        isPlyAtk = posList.Contains(player.point);
-            //    }
-            //}
 
 
             if (isPlayerMove)
@@ -200,12 +203,14 @@ namespace NecroDancer
                             //플레이어가 공격
                             player.Attack(monsters[i]);
                         }
-                    } 
+                    }
 
                     //이동 취소
                     player.point = playerTempPos;
                 }
 
+                //연산용 세팅
+                TileManager.SetTile(player.point, TileType.Player);
             }
 
             #endregion
@@ -257,32 +262,42 @@ namespace NecroDancer
 
                     }
 
+                    //if (monsterNextPos.X == -1 && monsterNextPos.Y == -1)
+                    //{
+                    //    monsterNextPos = monsters[i].point;
+                    //}
 
-                    
                     //임시 좌표로 몬스터 이동 가능한 지역인가 탐색
 
                     //해당 위치가 플레이어가 아닌가? 그리고 바닥인가? 에대한 체크
-                    if (monsterNextPos != player.point &&                        
-                        TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Floor)
+                    if (monsterNextPos != player.point &&
+                    TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Floor)
                     {
                         //다음 좌표로 몬스터 이동.
+
+
                         monsters[i].Move(monsterNextPos);
-                        //TileManager.SetTile(monsters[i].point, TileType.Monster);
+
+
+                        //어차피 타일정보는 초기화될것이지만
+                        //다음 몬스터들이 이전 몬스터들이 어디로 이동했는지 알기 위해
+                        //사용한 타일변경
+                        TileManager.SetTile(monsters[i].point, TileType.Monster);
                         //posList.Add(monsters[i].point);
 
                     }
                     //이동 불가지역임. 나중에 몬스터별로 행동다르게 할지도
-                    else if (monsterNextPos == player.point)
+                    else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Player)                    
                     {
                         monsters[i].Attack();
                         monsters[i].point = monsterPrevPos;
                     }
-                    else if(TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Monster)
+                    else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Monster)
                     {
                         Slime slime = monsters[i] as Slime;
-                        slime.fword = (Fword)random1.Next((int)Fword.start +1, (int)Fword.end);
+                        slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
                     }
-                    
+
                     /*
                     //for (int j = 0; j < monsters.Count; j++)
                     //{
@@ -348,7 +363,7 @@ namespace NecroDancer
 
             Console.SetCursorPosition(20, 5);
             Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
-            
+
 
             //여기부터 본진코드
             TileManager.Init();
@@ -358,11 +373,11 @@ namespace NecroDancer
             {
                 if (monsters[i].isAlive == true)
                 {
-                    TileManager.SetTile(monsters[i].point, monsters[i].type);            
+                    TileManager.SetTile(monsters[i].point, monsters[i].type);
                 }
             }
             TileManager.SetTile(player.point, player.type);
-            
+
             /*
             //for(int i = 1;i < player.viewPoint; i++)
             //{
@@ -385,23 +400,25 @@ namespace NecroDancer
             //}
             */
 
-            for(int viewX = -player.viewPoint; viewX < player.viewPoint; viewX++)
-            {
-                for(int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
-                {
-                    int newX = player.point.X + viewX;
-                    int mewY = player.point.Y + viewY;
 
-                    if(Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
-                    {
-                        if(newX >= 0 && newX < TileManager.tileSize &&
-                            mewY >= 0 && mewY < TileManager.tileSize)
-                        {
-                            TileManager.tiles[mewY, newX].isView = true;
-                        }
-                    }
-                }
-            }
+            //시야 제한코드
+            //for(int viewX = -player.viewPoint; viewX < player.viewPoint; viewX++)
+            //{
+            //    for(int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
+            //    {
+            //        int newX = player.point.X + viewX;
+            //        int mewY = player.point.Y + viewY;
+
+            //        if(Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
+            //        {
+            //            if(newX >= 0 && newX < TileManager.tileSize &&
+            //                mewY >= 0 && mewY < TileManager.tileSize)
+            //            {
+            //                TileManager.tiles[mewY, newX].isView = true;
+            //            }
+            //        }
+            //    }
+            //}
 
 
 

@@ -31,18 +31,6 @@ namespace NecroDancer
             return a.X != b.X && a.Y != b.Y;
         }
 
-        //햇갈려서 지움
-        //public static bool operator >(Point a, Point b)
-        //{
-        //    return a.X > b.X;
-        //}
-
-        //public static bool operator <(Point a, Point b)
-        //{
-        //    return a.X < b.X;
-        //}
-
-
     }
 
     class Beat
