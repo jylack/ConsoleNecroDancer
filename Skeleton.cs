@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleNecroDancer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace NecroDancer
         Random random;
 
         bool isSerch;
-
+        
         public Skeleton(Point point)
         {
             random = new Random();

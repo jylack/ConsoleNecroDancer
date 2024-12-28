@@ -27,8 +27,9 @@ namespace NecroDancer
         static int width;
 
         Hart hart;
-        Stopwatch sw = new Stopwatch();
-        Stopwatch beatWatch = new Stopwatch();
+
+
+
 
         public static ConsoleKeyInfo input;
 

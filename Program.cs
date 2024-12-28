@@ -9,8 +9,7 @@ namespace ConsoleNecroDancer
     internal class Program
     {
 
-       
-
+    
 
         static void Main(string[] args)
         {
@@ -21,6 +20,7 @@ namespace ConsoleNecroDancer
             GameManager gameManager = new GameManager();
             BattleManager battleManager = new BattleManager();
             
+        
             gameManager.Init();
             battleManager.Init();
             

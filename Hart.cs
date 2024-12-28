@@ -132,7 +132,7 @@ namespace NecroDancer
 
                     sw.Restart();
                 }
-
+                
                 if (beatWatch.ElapsedMilliseconds > 100)
                 {
                     //Console.Clear();
@@ -166,9 +166,7 @@ namespace NecroDancer
         }
 
         public void Render()
-        {
-            
-                
+        {                           
                 Console.SetCursorPosition(_point.X, _point.Y);
                 Console.WriteLine(_image);
 
@@ -177,7 +175,7 @@ namespace NecroDancer
                     Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
                     Console.Write(beat.Image);
                 }
-            }
+        }
 
             
         
