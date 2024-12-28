@@ -47,6 +47,7 @@ namespace ConsoleNecroDancer
                 //GameManager.ConSoleClear();
 
                 battleManager.Render();
+                gameManager.Render();
                 
             }
 

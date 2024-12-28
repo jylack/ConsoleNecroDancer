@@ -140,7 +140,7 @@ namespace NecroDancer
 
         public void Update()
         {
-            //GameManager.isGameStart = true;
+            GameManager.isGameStart = true;
 
             #region 플레이어이동
 

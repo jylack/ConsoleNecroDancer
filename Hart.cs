@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NecroDancer
 {
@@ -11,6 +12,16 @@ namespace NecroDancer
         string _image = "[     ]";
         int size;
         int width;//너비 위치
+        
+        int _gameSpeed = 0;
+
+        bool isHartStart = true;
+
+        Stopwatch sw = new Stopwatch();
+        Stopwatch beatWatch = new Stopwatch();
+
+        public int combo = 0;
+
 
         public Hart(Point point, int difficulty)
         {
@@ -36,7 +47,10 @@ namespace NecroDancer
         {
             return _point;
         }
-
+        public void SetGameSpeed(int speed)
+        {
+            _gameSpeed = speed;
+        }
         public void Addbeat(int speed ,int posY)
         {
             //왼쪽
@@ -100,17 +114,73 @@ namespace NecroDancer
             return false;
         }
 
+        
+
+
+        public void Update()
+        {
+            sw.Start();
+            beatWatch.Start();
+
+            if (isHartStart)
+            {
+                //게임 스피드만큼 시간이 지나면 비트를 추가한다.
+                if (sw.ElapsedMilliseconds > _gameSpeed)
+                {
+
+                    Addbeat(_gameSpeed, _point.Y);//비트가 움직일속도 지정                    
+
+                    sw.Restart();
+                }
+
+                if (beatWatch.ElapsedMilliseconds > 100)
+                {
+                    //Console.Clear();
+                    //ConSoleClear();
+
+                    if (Isbeats())
+                    {
+                        beatMove();
+
+                        //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
+                        if (IsNonCheckHit())
+                        {
+                            Removebeats();
+                            combo = 0;
+
+                        }
+                    }
+
+                    beatWatch.Restart();
+
+                    
+                    //Console.WriteLine();
+                    //Console.WriteLine(combo);
+
+                }
+            }
+
+            beatWatch.Stop();
+            sw.Stop();
+            
+        }
+
         public void Render()
         {
-            Console.SetCursorPosition(_point.X, _point.Y);
-            Console.WriteLine(_image);
+            
+                
+                Console.SetCursorPosition(_point.X, _point.Y);
+                Console.WriteLine(_image);
 
-            foreach (var beat in beats)
-            {
-                Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
-                Console.Write(beat.Image);
+                foreach (var beat in beats)
+                {
+                    Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
+                    Console.Write(beat.Image);
+                }
             }
-        }
+
+            
+        
 
     }
 
