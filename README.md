@@ -179,7 +179,7 @@
 	Queue<Beat> beats;
 	//하트의 위치
 	Point _point;
-	//하트의 길이
+	//하트의 길이7
 	int _len;
 	//하트 이미지
 	string _image = "[     ]";
@@ -219,27 +219,18 @@
 	bool _isLeft;//true면 왼쪽     false이면 오른쪽        
 	string _image = "|";
 
+	//프로퍼티	
+	//get만 사용하고 ,set은 차단해두었다.  게임이 끝날떄까지 변동이 될 예정이 없었기 때문입니다.
+	public string Image{ get { return _image; } }
+	//좌표지정을 생성할때만 할것이기 때문에 굳이 다시 set할필요 없어서 사용 안했다. 무엇보다 움직일때 다른곳으로 갑자기 튀어나가면 안되기 때문에 이렇게 했습니다.
+	public Point Point { get { return _point; } }
+
 ```
 ### 메소드
 ```cs
-	//하트의 좌표를 가져올 메소드
-	public Point GetPos();
-	//비트의 좌표를 지정해주면서 생성해줄 메소드
-	public void Addbeat(int posY);
-	//비트들을 한쌍으로 지워줄 메소드
-	public void Removebeats();
-	//비트들 전체를 움직일 함수
-	public void beatMove();
-	//비트가 있는지 체크하는 함수
-	public bool Isbeats();
-	//비트가 하트에 안맞았는지 체크
-	public bool IsNonCheckHit();
-	//비트가 하트에 맞았는지 체크
-	public bool IsCheckHit();	
-	//위의 메소드들을 조합해서 사용해줄 함수
-	public void Update();
-	//갱신된 정보를 그려줄 함수.
-	public void Render();
+    public void Move();
+
 ```
 
 ---
+7
