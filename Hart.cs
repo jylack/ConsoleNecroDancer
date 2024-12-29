@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace NecroDancer
 {
@@ -12,13 +13,10 @@ namespace NecroDancer
         string _image = "[     ]";
         int size;
         int width;//너비 위치
-        
-        int _gameSpeed = 0;
+
 
         bool isHartStart = true;
 
-        Stopwatch sw = new Stopwatch();
-        Stopwatch beatWatch = new Stopwatch();
 
         public int combo = 0;
 
@@ -34,8 +32,6 @@ namespace NecroDancer
 
             size = size / 2 + 1;
 
-            //_point.PosX -= size;
-
             _len = difficulty;
 
             width = Console.WindowWidth / 4;
@@ -47,16 +43,13 @@ namespace NecroDancer
         {
             return _point;
         }
-        public void SetGameSpeed(int speed)
-        {
-            _gameSpeed = speed;
-        }
-        public void Addbeat(int speed ,int posY)
+
+        public void Addbeat(int posY)
         {
             //왼쪽
-            beats.Enqueue(new Beat(new Point(width, posY), speed, true));
+            beats.Enqueue(new Beat(new Point(width, posY), true));
             //오른쪽
-            beats.Enqueue(new Beat(new Point(Console.WindowWidth - width, posY), speed, false));
+            beats.Enqueue(new Beat(new Point(Console.WindowWidth - width, posY), false));
         }
 
         public void Removebeats()
@@ -114,71 +107,49 @@ namespace NecroDancer
             return false;
         }
 
-        
+
 
 
         public void Update()
         {
-            sw.Start();
-            beatWatch.Start();
+
 
             if (isHartStart)
             {
-                //게임 스피드만큼 시간이 지나면 비트를 추가한다.
-                if (sw.ElapsedMilliseconds > _gameSpeed)
-                {
-
-                    Addbeat(_gameSpeed, _point.Y);//비트가 움직일속도 지정                    
-
-                    sw.Restart();
-                }
                 
-                if (beatWatch.ElapsedMilliseconds > 100)
+                Addbeat(_point.Y);
+
+                if (Isbeats())
                 {
-                    //Console.Clear();
-                    //ConSoleClear();
+                    beatMove();
 
-                    if (Isbeats())
+                    //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
+                    if (IsNonCheckHit())
                     {
-                        beatMove();
+                        Removebeats();
+                        combo = 0;
 
-                        //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
-                        if (IsNonCheckHit())
-                        {
-                            Removebeats();
-                            combo = 0;
-
-                        }
                     }
-
-                    beatWatch.Restart();
-
-                    
-                    //Console.WriteLine();
-                    //Console.WriteLine(combo);
-
                 }
+
+
             }
 
-            beatWatch.Stop();
-            sw.Stop();
-            
         }
 
         public void Render()
-        {                           
-                Console.SetCursorPosition(_point.X, _point.Y);
-                Console.WriteLine(_image);
+        {
+            Console.SetCursorPosition(_point.X, _point.Y);
+            Console.WriteLine(_image);
+            Console.SetCursorPosition(_point.X, _point.Y +1);
+            Console.Write($"combo : {combo}");
 
-                foreach (var beat in beats)
-                {
-                    Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
-                    Console.Write(beat.Image);
-                }
+            foreach (var beat in beats)
+            {
+                Console.SetCursorPosition(beat.Point.X, beat.Point.Y);
+                Console.Write(beat.Image);
+            }
         }
-
-            
-        
 
     }
 

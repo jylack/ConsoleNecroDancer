@@ -28,8 +28,8 @@ namespace NecroDancer
 
         Hart hart;
 
-        
-
+        Stopwatch sw = new Stopwatch();
+        Stopwatch beatWatch = new Stopwatch();
 
         public static ConsoleKeyInfo input;
 
@@ -40,6 +40,7 @@ namespace NecroDancer
 
         int combo = 0;
 
+        int gameSpeed = 600;
 
         public bool isAction = false;
 
@@ -56,7 +57,7 @@ namespace NecroDancer
             width = Console.WindowWidth / 2 - 3;
             hart = new Hart(new Point(width, height), (int)Difficulty.Normal);
 
-            for (int i = 0; i < Console.WindowWidth-1; i++)
+            for (int i = 0; i < Console.WindowWidth - 1; i++)
             {
                 strClear += " ";
             }
@@ -84,8 +85,8 @@ namespace NecroDancer
                 hart.Removebeats();
                 isAction = true;
             }
-            
-            
+
+
 
         }
 
@@ -126,15 +127,19 @@ namespace NecroDancer
                         KeyInputAction();
 
                         break;
-
-
                 }
 
             }
 
-            
+            beatWatch.Start();
 
-            hart.Update();
+            if (beatWatch.ElapsedMilliseconds > gameSpeed)
+            {
+                hart.Update();
+                beatWatch.Restart();
+            }
+
+            beatWatch.Stop();
         }
 
         public void Render()
@@ -145,8 +150,8 @@ namespace NecroDancer
 
         public static void ConSoleClear()
         {
-            
-            for(int i = 0; i <= height; i++)
+
+            for (int i = 0; i <= height; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write(strClear);
