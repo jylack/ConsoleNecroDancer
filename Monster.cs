@@ -2,7 +2,7 @@
 
 namespace NecroDancer
 {
-    public class Monster :  Unit
+    public class Monster : Unit
     {
 
         protected int movePoint = 1;
@@ -10,7 +10,7 @@ namespace NecroDancer
 
         public bool isSerch = false;
         public bool isMove = true;
-        
+
 
         public Monster()
         {
@@ -413,11 +413,11 @@ namespace NecroDancer
             // 탐색
         }
 
-  
+
 
         public override void PopItem(Item item)
         {
-            
+
         }
 
         public override void Attack()
@@ -430,7 +430,7 @@ namespace NecroDancer
                 dmg = 0;
             }
 
-            Player.Life += dmg; 
+            Player.Life += dmg;
         }
 
         public override void Move(Point point)

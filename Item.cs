@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NecroDancer
+﻿namespace NecroDancer
 {
     public enum ItemType
     {
@@ -39,13 +33,13 @@ namespace NecroDancer
             _lange = 0;
         }
 
-        public Item(ItemType state , Point point)
+        public Item(ItemType state, Point point)
         {
             _state = state;
             _point = point;
         }
 
-        public ItemType State { get { return _state; }  }
+        public ItemType State { get { return _state; } }
 
         public void Use(Unit target) { }
         public void Drop(Point point)

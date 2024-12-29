@@ -24,24 +24,17 @@ namespace NecroDancer
     public class GameManager : IManagerInterFace
     {
 
-        static int height;
-        static int width;
+        public static int height;
+        public static int width;
 
         Hart hart;
 
-        Stopwatch sw = new Stopwatch();
         Stopwatch beatWatch = new Stopwatch();
 
         public static ConsoleKeyInfo input;
 
 
         public static bool isGameStart = true;
-
-        int beatCount = 0;
-
-        int combo = 0;
-
-        int gameSpeed = 1;
 
         public bool isAction = false;
 
@@ -75,7 +68,7 @@ namespace NecroDancer
             //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
             if (hart.Isbeats() && hart.IsCheckHit() == false)
             {
-                combo = 0;
+                hart.combo = 0;
                 hart.Removebeats();
                 isAction = false;
                 return;
@@ -85,7 +78,7 @@ namespace NecroDancer
             //비트가 있고 하트가 맞았을때
             if (hart.Isbeats() && hart.IsCheckHit())
             {
-                combo++;
+                hart.combo++;
                 hart.Removebeats();
                 isAction = true;
             }
@@ -99,15 +92,16 @@ namespace NecroDancer
 
             input = new ConsoleKeyInfo();
 
-
+            //키를 입력받았을때만 들어오라는 의미.
             if (Console.KeyAvailable)
             {
                 input = Console.ReadKey(true);
 
                 switch (input.Key)
                 {
+                    //디버깅용 모든멥 밝히는 치트키
                     case ConsoleKey.Spacebar:
-
+                        TileManager.isViewAll = !TileManager.isViewAll;
                         break;
 
                     //방향 이동.
@@ -132,14 +126,17 @@ namespace NecroDancer
 
                         break;
                 }
-
+                //사실 KeyInputAction()은 맨아래 case안에넣고,
+                //나머진 break를 지워주면 전부 해결되는거긴한데...
+                //가독성이 안좋아서 수정
             }
 
-
+            //비트는 0.6초당 한번씩 생성된다.
             if (beatWatch.ElapsedMilliseconds > 600)
             {
                 hart.Addbeat(hart.GetPos().Y);
                 beatWatch.Restart();
+
             }
 
             hart.Update();
@@ -153,10 +150,12 @@ namespace NecroDancer
 
         }
 
-        public static void ConSoleClear()
+        //Console.Clear()대신 쓸 메소드
+        //원래는 static이였으나 어차피 화면변화는 한번만해주면되길래 수정.
+        public void ConSoleClear()
         {
 
-            for (int i = 0; i <= height; i++)
+            for (int i = 0; i <= height + 5; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write(strClear);
@@ -166,8 +165,86 @@ namespace NecroDancer
 
         public void End()
         {
-
+            if (Player.Life <= 0)
+            {
+                YouDiE();
+            }
+            else
+            {
+                YouWin();
+            }
         }
 
+
+        public void YouDiE()
+        {
+            string[] strings = new string[6];
+
+
+            strings[0] = "██╗   ██╗ ██████╗ ██╗   ██╗    ██████╗ ██╗███████╗";
+            strings[1] = "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔══██╗██║██╔════╝";
+            strings[2] = " ╚████╔╝ ██║   ██║██║   ██║    ██║  ██║██║█████╗  ";
+            strings[3] = "  ╚██╔╝  ██║   ██║██║   ██║    ██║  ██║██║██╔══╝  ";
+            strings[4] = "   ██║   ╚██████╔╝╚██████╔╝    ██████╔╝██║███████╗";
+            strings[5] = "   ╚═╝    ╚═════╝  ╚═════╝     ╚═════╝ ╚═╝╚══════╝";
+
+            for (int i = 0; i < strings.Length; i++)
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 4, 5 + i);
+                Console.WriteLine(strings[i]);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+        public void YouWin()
+        {
+            string[] strings = new string[8];
+
+
+            strings[0] = "########################################################";
+            strings[1] = "#██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗#";
+            strings[2] = "#╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██║████╗  ██║#";
+            strings[3] = "# ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║██╔██╗ ██║#";
+            strings[4] = "#  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║██║╚██╗██║#";
+            strings[5] = "#   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║#";
+            strings[6] = "#   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝#";
+            strings[7] = "########################################################";
+
+
+            for (int i = 0; i < strings.Length; i++)
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 4, 5 + i);
+                Console.WriteLine(strings[i]);
+
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
     }
 }

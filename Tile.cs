@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NecroDancer
 {
@@ -34,8 +30,8 @@ namespace NecroDancer
 
 
         public int Hp { get { return _hp; } set { _hp = value; } }
-        public int Atk { get { return _atk; }}
-        public int Def { get { return _def; }}
+        public int Atk { get { return _atk; } }
+        public int Def { get { return _def; } }
 
         //타일들 보여줄꺼냐 말꺼냐
         public bool isView = false;
@@ -46,9 +42,10 @@ namespace NecroDancer
             _hp = 0;
             _atk = 0;
             _def = 0;
-         //   isView = true;
+            //   isView = true;
         }
 
+        //타일생성시 타입지정해주면 그 타일로 생성예정이였음.
         public Tile(TileType type)
         {
             _hp = 0;
@@ -91,34 +88,24 @@ namespace NecroDancer
     {
 
         public static int tileSize = 10;
+        public static int tilePosX = Console.WindowWidth / 2 - tileSize;
+        public static int tilePosY = GameManager.height - tileSize-1;
 
         public static Tile[,] tiles; //맵타일
-        public static Tile[,] originTiles; //맵타일
 
-        static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "ⓜ", "ⓟ" };//전부 표기
+        static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼", "ⓜ", "ⓟ" };//전부 표기
 
-        public static string[] GetImage
-        {
-            get { return  tileImage; }
-        }
+        public static bool isViewAll = false;
 
-        public TileManager()
-        {
-  
-        }
-
+        //이동정보가 있는 타일들의 정보를 갱신시켜줌
         public static void SetTile(Point point, TileType type)
         {
             tiles[point.Y, point.X] = new Tile(type);
-          //  originTiles[point.Y, point.X] = new Tile(type);
         }
 
-        public void Update()
-        {
 
-        }
-
-        public static void Init()
+        //타일들 기본바닥으로 초기화세팅 일종의 mapClear
+        public static void TileSetTing()
         {
             //테스트용 tileSize X tileSize 맵생성
             tiles = new Tile[tileSize, tileSize];
@@ -128,14 +115,15 @@ namespace NecroDancer
                 for (int x = 0; x < tileSize; x++)
                 {
                     tiles[y, x] = new Tile(TileType.Floor);
-                   // originTiles[y, x] = new Tile(TileType.Floor);
+                    tiles[y, x].isView = isViewAll;
                 }
             }
         }
 
         public static void Render()
         {
-            Console.SetCursorPosition(0, 0);
+            //멥 위치초기화
+            Console.SetCursorPosition(tilePosX, tilePosY);
 
             for (int y = 0; y < tileSize; y++)
             {
@@ -145,12 +133,14 @@ namespace NecroDancer
                     {
                         Console.Write(tileImage[(int)tiles[y, x].GetTileType()]);
                     }
+                    //이부분은 원래 if를 하나 더걸어서 시야범위에 조금 가감을 줄예정이였음.
                     else
                     {
                         Console.Write(tileImage[0]);//여백 혹은 나중에 다르게표현할지도?
                     }
                 }
-                Console.WriteLine();
+                Console.SetCursorPosition(tilePosX, tilePosY + y +1);
+                
             }
         }
 

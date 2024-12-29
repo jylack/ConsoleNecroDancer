@@ -5,9 +5,11 @@ namespace NecroDancer
 {
     public class Player : Unit
     {
-        int movePoint = 1;
+        //이동범위
+        int movePoint = 1;        
         bool isMove;
 
+        //다른곳에서 플레이어에게 데미지줄때 쓰임.        
         public static new int Life = 0;
         public static new int Def = 0;
 
@@ -20,37 +22,30 @@ namespace NecroDancer
             Def = 0;
             Lange = 1;
             _image = "ⓟ";
-            
+
             type = TileType.Player;
-            
+
             viewPoint = 3;
 
 
             _inventory = new List<Item>();
         }
 
-       
+
+        //원래 벽부수기같은경우 쓰일 예정이였음.
         public void Attack(Tile tile)
         {
 
         }
 
 
-
+        //아이템 흭득시 사용할 예정이였음.
         public void GetItme(Item item)
         {
             // 아이템 획득
             _inventory.Add(item);
         }
 
-        public override void Move()
-        {
-            throw new System.NotImplementedException();
-        }
-        public override void Move(Point point)
-        {
-            throw new System.NotImplementedException();
-        }
         public bool Move(Fword fword)
         {
 
@@ -116,13 +111,13 @@ namespace NecroDancer
             }
 
             target.Life += dmg;
-            Console.SetCursorPosition(20, 10);
-            Console.WriteLine($"dmg : {dmg} 몬스터 잔여hp : {target.Life}");
+            //Console.SetCursorPosition(20, 10);
+            //Console.WriteLine($"dmg : {dmg} 몬스터 잔여hp : {target.Life}");
         }
 
         public override void Die()
         {
-            
+
         }
 
         public override void Spawn(Point point)
@@ -130,6 +125,7 @@ namespace NecroDancer
             _point = point;
 
         }
+
 
         public override void PopItem(Item item)
         {
@@ -139,12 +135,24 @@ namespace NecroDancer
             }
         }
 
+
+
+
         public override void Attack()
+        {
+
+        }
+
+
+        //생각보다 모든 유닛들이 무브를 같은방식으로 쓰지 않게되어서 버려진 함수들.
+        public override void Move()
         {
             
         }
-
-    
+        public override void Move(Point point)
+        {
+            
+        }
     }
 
 }

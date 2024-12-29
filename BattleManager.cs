@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleNecroDancer;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -7,9 +8,9 @@ namespace NecroDancer
 {
     internal class BattleManager : IManagerInterFace
     {
-        //TileManager TileManager;
+
         Player player;
-        //Monster monster;
+
         List<Item> dropItemList;//바닥에 아이템 떨군거 표시 
         List<Monster> monsters;//나중에 몬스터들 여기다 다 넣을거임.
 
@@ -18,12 +19,7 @@ namespace NecroDancer
         Point monsterNextPos;//몬스터 다음좌표 가지고있음.
         Point monsterPrevPos;//몬스터 이전좌표 가지고있음.
 
-        //TileType playerTempTile; // 멥에 변동이 생겼을때 원래 가지고있던 타일값 저장하는 용도.
-
         List<Point> tempSpawnPos;//스폰할떄 위치 저장해둔데 안가기 만들려고 씀.
-
-        //List<Point> posList;//모든 활성화객체 좌표담아둘곳. 흠 무리인듯.
-        Queue<TileType> tempTileTypes;//몬스터들 이동할 타일 미리저장해둠.
 
         bool isPlayerMove = false;
         bool isAction = false;
@@ -49,7 +45,7 @@ namespace NecroDancer
 
             while (isRnd == true)
             {
-                rndX = random1.Next(TileManager.tileSize);
+                rndX = random1.Next( TileManager.tileSize);
                 rndY = random2.Next(TileManager.tileSize);
 
                 rndPos = new Point(rndY, rndX);
@@ -71,16 +67,13 @@ namespace NecroDancer
             monsterWatch = stopwatch;
         }
 
-
-
         public void Init()
         {
 
-            tempTileTypes = new Queue<TileType>();
             monsters = new List<Monster>();
             tempSpawnPos = new List<Point>(); //첫 생성 좌표 다가지고있음. 몬스터 생성후 안씀.
 
-            TileManager.Init();
+            TileManager.TileSetTing();
 
             player = new Player();
 
@@ -103,10 +96,7 @@ namespace NecroDancer
 
 
 
-            for (int i = 0; i < monsters.Count; i++)
-            {
-                tempTileTypes.Enqueue(TileManager.tiles[monsters[i].point.Y, monsters[i].point.X].GetTileType());
-            }
+   
             for (int i = 0; i < monsters.Count; i++)
             {
                 monsters[i].Spawn(monsters[i].point);
@@ -122,6 +112,13 @@ namespace NecroDancer
         public void Update()
         {
             GameManager.isGameStart = true;
+
+            //몬스터가 없거나 플레이어 피가 없으면 게임종료.
+            if (monsters.Count <= 0 ||
+                    Player.Life <= 0)
+            {
+                Program.isGame = false;
+            }
 
 
             #region 플레이어이동
@@ -215,6 +212,7 @@ namespace NecroDancer
                 Queue<int> indexs = new Queue<int>();
                 string image;
 
+                
 
 
                 for (int i = 0; i < monsters.Count; i++)
@@ -314,30 +312,29 @@ namespace NecroDancer
         {
 
             ////디버그 코드
-            //Slime temp = new Slime(new Point(0, 0));
+            Slime temp = new Slime(new Point(0, 0));
 
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    Console.SetCursorPosition(20, i);
-            //    Console.Write("                                                                                           ");
-            //}
-
-            //for (int i = 0; i < monsters.Count; i++)
-            //{
-            //    temp = monsters[i] as Slime;
-            //    Console.SetCursorPosition(20, i);
-            //    Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");
-            //    Console.Write($"\t방향 : {temp.fword} \t HP : {temp.Life} \t 생존: {temp.isAlive}");
-            //}
-
+            
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i].isAlive)
+                {
+                    temp = monsters[i] as Slime;
+                    Console.SetCursorPosition(20, i);
+                    Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");
+                    Console.Write($"\t방향 : {temp.fword} \t HP : {temp.Life} ");
+                }
+                
+            }
 
 
-            //Console.SetCursorPosition(20, 5);
-            //Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
+
+            Console.SetCursorPosition(20, 5);
+            Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
 
 
-            //여기부터 본진코드
-            TileManager.Init();
+            //여기부터 본진코드            
+            TileManager.TileSetTing();
 
 
             for (int i = 0; i < monsters.Count; i++)

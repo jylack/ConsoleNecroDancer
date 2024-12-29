@@ -37,7 +37,7 @@ namespace NecroDancer
 
         public string Image { get { return _image; } }
 
-        public abstract void Move();     
+        public abstract void Move();
         public abstract void Move(Point point);
 
         public abstract void Attack();
