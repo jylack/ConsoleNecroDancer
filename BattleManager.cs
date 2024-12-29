@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Policy;
@@ -34,7 +35,8 @@ namespace NecroDancer
         //들어온 값이랑 다른값이 나올때 까지 랜덤
         Random random1 = new Random();
         Random random2 = new Random();
-        
+
+        Stopwatch beatWatch = new Stopwatch();
 
         public Point RandomPos()//pos랑 안에서 연산해줄애랑 달라야 나옴. 
         {
@@ -115,6 +117,7 @@ namespace NecroDancer
         public void Update()
         {
             GameManager.isGameStart = true;
+            beatWatch.Start();
 
             #region 플레이어이동
 
@@ -190,6 +193,8 @@ namespace NecroDancer
             #endregion
 
             #region 몬스터이동
+
+            
 
             Queue<int> indexs = new Queue<int>();
             string image;
@@ -351,23 +356,23 @@ namespace NecroDancer
 
 
             //시야 제한코드
-            //for(int viewX = -player.viewPoint; viewX < player.viewPoint; viewX++)
-            //{
-            //    for(int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
-            //    {
-            //        int newX = player.point.X + viewX;
-            //        int mewY = player.point.Y + viewY;
+            for (int viewX = -player.viewPoint; viewX < player.viewPoint; viewX++)
+            {
+                for (int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
+                {
+                    int newX = player.point.X + viewX;
+                    int mewY = player.point.Y + viewY;
 
-            //        if(Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
-            //        {
-            //            if(newX >= 0 && newX < TileManager.tileSize &&
-            //                mewY >= 0 && mewY < TileManager.tileSize)
-            //            {
-            //                TileManager.tiles[mewY, newX].isView = true;
-            //            }
-            //        }
-            //    }
-            //}
+                    if (Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
+                    {
+                        if (newX >= 0 && newX < TileManager.tileSize &&
+                            mewY >= 0 && mewY < TileManager.tileSize)
+                        {
+                            TileManager.tiles[mewY, newX].isView = true;
+                        }
+                    }
+                }
+            }
 
 
 

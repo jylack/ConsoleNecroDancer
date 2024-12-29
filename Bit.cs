@@ -35,7 +35,6 @@
     {
         Point _point;
 
-        bool _isHart = false;
         bool _isLeft;//true면 왼쪽     false이면 오른쪽        
         string _image = "|";
 
@@ -69,13 +68,5 @@
                 _point.X -= 1;
             }
         }
-
-        public void IsHit()
-        {
-            _isHart = true;
-        }
-
-
-
     }
 }

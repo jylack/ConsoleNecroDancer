@@ -1,5 +1,6 @@
 ﻿using NecroDancer;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace ConsoleNecroDancer
@@ -11,6 +12,7 @@ namespace ConsoleNecroDancer
 
 
 
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -18,7 +20,8 @@ namespace ConsoleNecroDancer
             GameManager gameManager = new GameManager();
             BattleManager battleManager = new BattleManager();
 
-            //            Stopwatch frameWatch = new Stopwatch();
+            Stopwatch frameWatch = new Stopwatch();
+            Stopwatch hartWarch = new Stopwatch();
 
             gameManager.Init();
             battleManager.Init();
@@ -29,23 +32,33 @@ namespace ConsoleNecroDancer
             LogoPrint();
             Thread.Sleep(500);
 
+            frameWatch.Start();
+
+
+
             while (true)
             {
 
+                    gameManager.Update();
+
+                    battleManager.SetAction(gameManager.isAction);
+
+                    battleManager.Update();
+
+                    GameManager.ConSoleClear();
+
+                    frameWatch.Restart();
+
                 
-                gameManager.Update();
-
-                battleManager.SetAction(gameManager.isAction);
-
-                battleManager.Update();
-
-                GameManager.ConSoleClear();
 
                 battleManager.Render();
                 gameManager.Render();
 
-             
+
+
             }
+
+            frameWatch.Stop();
 
             gameManager.End();
 
@@ -54,7 +67,7 @@ namespace ConsoleNecroDancer
 
         static void LogoPrint()
         {
-            string str =    "\t╔────────────────────────────────────────────────────╗\r\n" +
+            string str = "\t╔────────────────────────────────────────────────────╗\r\n" +
                             "\t│ ███╗   ██╗███████╗ ██████╗██████╗  ██████╗        │\r\n" +
                             "\t│ ████╗  ██║██╔════╝██╔════╝██╔══██╗██╔═══██╗       │\r\n" +
                             "\t│ ██╔██╗ ██║█████╗  ██║     ██████╔╝██║   ██║       │\r\n" +

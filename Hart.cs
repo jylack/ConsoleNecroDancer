@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 
 namespace NecroDancer
 {
@@ -14,6 +12,7 @@ namespace NecroDancer
         int size;
         int width;//너비 위치
 
+        int _time;
 
         bool isHartStart = true;
 
@@ -108,32 +107,33 @@ namespace NecroDancer
         }
 
 
+        public void SetTime(int time)
+        {
+            _time = time;
 
+        }
 
         public void Update()
         {
 
 
-            if (isHartStart)
+
+                //Addbeat(_point.Y);
+
+            if (Isbeats())
             {
-                
-                Addbeat(_point.Y);
+                beatMove();
 
-                if (Isbeats())
+                //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
+                if (IsNonCheckHit())
                 {
-                    beatMove();
+                    Removebeats();
+                    combo = 0;
 
-                    //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
-                    if (IsNonCheckHit())
-                    {
-                        Removebeats();
-                        combo = 0;
-
-                    }
                 }
-
-
             }
+
+
 
         }
 
@@ -141,7 +141,7 @@ namespace NecroDancer
         {
             Console.SetCursorPosition(_point.X, _point.Y);
             Console.WriteLine(_image);
-            Console.SetCursorPosition(_point.X, _point.Y +1);
+            Console.SetCursorPosition(_point.X, _point.Y + 1);
             Console.Write($"combo : {combo}");
 
             foreach (var beat in beats)

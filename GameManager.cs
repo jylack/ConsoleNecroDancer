@@ -36,11 +36,11 @@ namespace NecroDancer
 
         public static bool isGameStart = true;
 
-        //int beatSpeed = 1;
+        int beatCount = 0;
 
         int combo = 0;
 
-        int gameSpeed = 600;
+        int gameSpeed = 1;
 
         public bool isAction = false;
 
@@ -95,6 +95,7 @@ namespace NecroDancer
 
             input = new ConsoleKeyInfo();
 
+            beatWatch.Start();
 
             if (Console.KeyAvailable)
             {
@@ -131,19 +132,21 @@ namespace NecroDancer
 
             }
 
-            beatWatch.Start();
-
-            if (beatWatch.ElapsedMilliseconds > gameSpeed)
+            
+            if(beatWatch.ElapsedMilliseconds > 0.1)
             {
-                hart.Update();
+                hart.Addbeat(hart.GetPos().Y);
                 beatWatch.Restart();
             }
+
+            hart.Update();
 
             beatWatch.Stop();
         }
 
         public void Render()
         {
+
             hart.Render();
 
         }
