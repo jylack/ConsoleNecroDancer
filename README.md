@@ -99,3 +99,147 @@
 # 초기에 생각한 마인드맵
 
 ![마인드맵](https://github.com/user-attachments/assets/69e874e9-375d-4b4a-8086-25370eadbbf1)
+
+# 코드 기능 정리
+
+## Program.cs
+### 멤버변수
+```cs
+	GameManager gameManager = new GameManager();
+	BattleManager battleManager = new BattleManager();
+	
+	//프레임 시간조절용
+	Stopwatch frameWatch = new Stopwatch();
+	//비트 시간조절용
+	Stopwatch beatWatch = new Stopwatch();
+	//몬스터 시간조절용
+	Stopwatch monsterWarch = new Stopwatch();
+```
+### 메소드
+```cs
+	//게임시작시 작동할 메소드
+	static public bool GameStart();
+	//게임시작시 보여줄 로고
+	static void LogoPrint();
+
+```
+
+## GameManager.cs
+### 멤버변수
+```cs
+
+	//하트의 위치를 정해줄때 쓰인 녀석들.
+	public static int height;
+	public static int width;
+	
+	Hart hart;
+	
+	//비트시간
+	Stopwatch beatWatch = new Stopwatch();
+	//전체적인 키값으로 이용
+	public static ConsoleKeyInfo input;
+	//게임매니저 작동여부
+	public static bool isGameStart = true;
+	//플레이어 움직임을 제어해줄 변수
+	public bool isAction = false;
+	//게임 전체적인 멥초기화용도
+	static string strClear = "";
+	
+	
+	```
+	### 메소드
+	``` csharp
+	//프로그램 클래스에서 시계를 받아옴.
+	public void SetTimer(Stopwatch stopwatch);
+	
+	public void Init();
+	//키를 눌렀을때 비트가 어떤상황인지에 따른 반응을 넣어둠.
+	public void KeyInputAction();
+	
+	//키를 입력받고, 플레이어의 이동을 제어하고 , 비트의 생성을 해주는 녀석
+	public void Update();
+	//위의 정보를 받아 그려주는 녀석
+	public void Render();
+	
+	//Console.Clear()대신 쓸 메소드
+	//원래는 static이였으나 어차피 화면변화는 한번만해주면되길래 수정.
+	public void ConSoleClear();
+	
+	public void End();
+	public void YouDiE();
+	public void YouWin();
+	
+```
+
+
+## Hart.cs
+### 멤버변수
+```cs
+	//비트가 들어온 순서대로 나가야해서 큐씀
+	Queue<Beat> beats;
+	//하트의 위치
+	Point _point;
+	//하트의 길이
+	int _len;
+	//하트 이미지
+	string _image = "[     ]";
+	//하트 사이즈 기록용
+	int size;
+	int beatX;//비트 왼쪽의 x값
+	//콤보값
+	public int combo = 0;
+
+```
+### 메소드
+```cs
+	//하트의 좌표를 가져올 메소드
+	public Point GetPos();
+	//비트의 좌표를 지정해주면서 생성해줄 메소드
+	public void Addbeat(int posY);
+	//비트들을 한쌍으로 지워줄 메소드
+	public void Removebeats();
+	//비트들 전체를 움직일 함수
+	public void beatMove();
+	//비트가 있는지 체크하는 함수
+	public bool Isbeats();
+	//비트가 하트에 안맞았는지 체크
+	public bool IsNonCheckHit();
+	//비트가 하트에 맞았는지 체크
+	public bool IsCheckHit();	
+	//위의 메소드들을 조합해서 사용해줄 함수
+	public void Update();
+	//갱신된 정보를 그려줄 함수.
+	public void Render();
+```
+
+## Beat.cs
+### 멤버변수
+```cs
+	Point _point;	
+	bool _isLeft;//true면 왼쪽     false이면 오른쪽        
+	string _image = "|";
+
+```
+### 메소드
+```cs
+	//하트의 좌표를 가져올 메소드
+	public Point GetPos();
+	//비트의 좌표를 지정해주면서 생성해줄 메소드
+	public void Addbeat(int posY);
+	//비트들을 한쌍으로 지워줄 메소드
+	public void Removebeats();
+	//비트들 전체를 움직일 함수
+	public void beatMove();
+	//비트가 있는지 체크하는 함수
+	public bool Isbeats();
+	//비트가 하트에 안맞았는지 체크
+	public bool IsNonCheckHit();
+	//비트가 하트에 맞았는지 체크
+	public bool IsCheckHit();	
+	//위의 메소드들을 조합해서 사용해줄 함수
+	public void Update();
+	//갱신된 정보를 그려줄 함수.
+	public void Render();
+```
+
+---
