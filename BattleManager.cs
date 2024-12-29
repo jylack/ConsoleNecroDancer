@@ -24,6 +24,7 @@ namespace NecroDancer
         bool isPlayerMove = false;
         bool isAction = false;
 
+        int killCount = 0;
 
 
         //들어온 값이랑 다른값이 나올때 까지 랜덤
@@ -108,14 +109,12 @@ namespace NecroDancer
 
         }
 
-
         public void Update()
         {
             GameManager.isGameStart = true;
 
             //몬스터가 없거나 플레이어 피가 없으면 게임종료.
-            if (monsters.Count <= 0 ||
-                    Player.Life <= 0)
+            if (killCount >= monsters.Count || Player.Life <= 0)
             {
                 Program.isGame = false;
             }
@@ -297,6 +296,7 @@ namespace NecroDancer
                     {
                         monsters[i].Die();
                         indexs.Enqueue(i);
+                        killCount++;
 
                     }
                 }

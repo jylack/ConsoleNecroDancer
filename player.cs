@@ -17,7 +17,7 @@ namespace NecroDancer
 
         public Player()
         {
-            Life = 4;
+            Life = 40;
             Atk = 1;
             Def = 0;
             Lange = 1;
