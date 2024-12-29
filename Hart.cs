@@ -7,9 +7,17 @@ namespace NecroDancer
     {
         Point _point;
         int _len;
-        Queue<Beat> beats;
+        Queue<Beat> beats;//들어온 순서대로 나가야해서 큐씀
         string _image = "[     ]";
         int size;
+        int width;//너비 위치
+
+        int _time;
+
+        bool isHartStart = true;
+
+
+        public int combo = 0;
 
 
         public Hart(Point point, int difficulty)
@@ -23,22 +31,24 @@ namespace NecroDancer
 
             size = size / 2 + 1;
 
-            //_point.PosX -= size;
-
             _len = difficulty;
 
+            width = Console.WindowWidth / 4;
         }
+
+        public int Size { get { return size; } }
 
         public Point GetPos()
         {
             return _point;
         }
 
-        public void Addbeat(int speed ,int posY)
+        public void Addbeat(int posY)
         {
-
-            beats.Enqueue(new Beat(new Point(0, posY), speed, true)); //왼쪽
-            beats.Enqueue(new Beat(new Point(Console.WindowWidth, posY), speed, false));//오른쪽 추가
+            //왼쪽
+            beats.Enqueue(new Beat(new Point(width, posY), true));
+            //오른쪽
+            beats.Enqueue(new Beat(new Point(Console.WindowWidth - width, posY), false));
         }
 
         public void Removebeats()
@@ -96,10 +106,43 @@ namespace NecroDancer
             return false;
         }
 
-        public void Print()
+
+        public void SetTime(int time)
+        {
+            _time = time;
+
+        }
+
+        public void Update()
+        {
+
+
+
+                //Addbeat(_point.Y);
+
+            if (Isbeats())
+            {
+                beatMove();
+
+                //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
+                if (IsNonCheckHit())
+                {
+                    Removebeats();
+                    combo = 0;
+
+                }
+            }
+
+
+
+        }
+
+        public void Render()
         {
             Console.SetCursorPosition(_point.X, _point.Y);
             Console.WriteLine(_image);
+            Console.SetCursorPosition(_point.X, _point.Y + 1);
+            Console.Write($"combo : {combo}");
 
             foreach (var beat in beats)
             {

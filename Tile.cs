@@ -37,7 +37,8 @@ namespace NecroDancer
         public int Atk { get { return _atk; }}
         public int Def { get { return _def; }}
 
-        public bool isView;
+        //타일들 보여줄꺼냐 말꺼냐
+        public bool isView = true;
 
         public Tile()
         {
@@ -45,7 +46,7 @@ namespace NecroDancer
             _hp = 0;
             _atk = 0;
             _def = 0;
-            isView = false;
+         //   isView = true;
         }
 
         public Tile(TileType type)
@@ -94,7 +95,7 @@ namespace NecroDancer
         public static Tile[,] tiles; //맵타일
         public static Tile[,] originTiles; //맵타일
 
-        static string[] tileImage = { " ", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+        static string[] tileImage = { "　", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "ⓜ", "ⓟ" };//전부 표기
 
         public static string[] GetImage
         {
@@ -119,7 +120,7 @@ namespace NecroDancer
 
         public static void Init()
         {
-            //테스트용 10x10 맵생성
+            //테스트용 tileSize X tileSize 맵생성
             tiles = new Tile[tileSize, tileSize];
 
             for (int y = 0; y < tileSize; y++)

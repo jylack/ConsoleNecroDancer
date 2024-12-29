@@ -10,6 +10,7 @@ namespace NecroDancer
         Hard = 1
     }
 
+    //방향
     public enum Fword
     {
         start,
@@ -20,43 +21,67 @@ namespace NecroDancer
         end
     }
 
-    internal class GameManager : IManagerInterFace
+    public class GameManager : IManagerInterFace
     {
 
-        int height;
-        int width;
+        static int height;
+        static int width;
 
         Hart hart;
 
         Stopwatch sw = new Stopwatch();
         Stopwatch beatWatch = new Stopwatch();
 
-
         public static ConsoleKeyInfo input;
 
 
         public static bool isGameStart = true;
 
-        int beatSpeed = 1;
+        int beatCount = 0;
 
         int combo = 0;
 
-        int gameSpeed = 600; // 0.6초당 박자 움직이기
+        int gameSpeed = 1;
 
-        bool isAction = false;
+        public bool isAction = false;
+
+        static string strClear = "";
+
+
+        public void SetTimer(Stopwatch stopwatch)
+        {
+            beatWatch = stopwatch;
+        }
 
 
         public void Init()
         {
 
-            height = Console.WindowHeight;
+            height = 20;
             width = Console.WindowWidth / 2 - 3;
-            hart = new Hart(new Point(width, 20), (int)Difficulty.Normal);
+            hart = new Hart(new Point(width, height), (int)Difficulty.Normal);
+
+            for (int i = 0; i < Console.WindowWidth - 1; i++)
+            {
+                strClear += " ";
+            }
 
         }
 
         public void KeyInputAction()
         {
+            isGameStart = false;
+
+            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
+            if (hart.Isbeats() && hart.IsCheckHit() == false)
+            {
+                combo = 0;
+                hart.Removebeats();
+                isAction = false;
+                return;
+            }
+
+
             //비트가 있고 하트가 맞았을때
             if (hart.Isbeats() && hart.IsCheckHit())
             {
@@ -64,15 +89,8 @@ namespace NecroDancer
                 hart.Removebeats();
                 isAction = true;
             }
-            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
-            else if (hart.Isbeats() && hart.IsCheckHit() == false)
-            {
-                combo = 0;
-                hart.Removebeats();
-                isAction = false;
-            }
 
-            isGameStart = false;
+
 
         }
 
@@ -81,107 +99,74 @@ namespace NecroDancer
 
             input = new ConsoleKeyInfo();
 
-            sw.Start();
 
-            beatWatch.Start();
-
-            while (isGameStart)
+            if (Console.KeyAvailable)
             {
+                input = Console.ReadKey(true);
 
-                if (Console.KeyAvailable)
+                switch (input.Key)
                 {
-                    input = Console.ReadKey(true);
+                    case ConsoleKey.Spacebar:
 
-                    switch (input.Key)
-                    {
-                        case ConsoleKey.Spacebar:
+                        break;
 
-                            break;
+                    //방향 이동.
+                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.A:
+                        KeyInputAction();
+                        break;
 
-                        //방향 이동.
-                        case ConsoleKey.A:
-                        case ConsoleKey.LeftArrow:
-                            KeyInputAction();
-                            break;
-                        case ConsoleKey.RightArrow:
-                        case ConsoleKey.D:
-                            KeyInputAction();
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.D:
+                        KeyInputAction();
+                        break;
 
-                            break;
-                        case ConsoleKey.UpArrow:
-                        case ConsoleKey.W:
-                            KeyInputAction();
+                    case ConsoleKey.UpArrow:
+                    case ConsoleKey.W:
+                        KeyInputAction();
+                        break;
 
-                            break;
-                        case ConsoleKey.S:
-                        case ConsoleKey.DownArrow:
-                            KeyInputAction();
+                    case ConsoleKey.DownArrow:
+                    case ConsoleKey.S:
+                        KeyInputAction();
 
-                            break;
-
-
-                    }
-
+                        break;
                 }
-
-                if (isAction)
-                {
-
-                }
-
-                //게임 스피드만큼 시간이 지나면 비트를 추가한다.
-                if (sw.ElapsedMilliseconds > gameSpeed)
-                {
-
-                    hart.Addbeat(beatSpeed, hart.GetPos().Y);//비트가 움직일속도 지정                    
-
-                    sw.Restart();
-                }
-
-                Render();
-
 
             }
 
-            beatWatch.Stop();
 
-            sw.Stop();
+            if (beatWatch.ElapsedMilliseconds > 600)
+            {
+                hart.Addbeat(hart.GetPos().Y);
+                beatWatch.Restart();
+            }
+
+            hart.Update();
+
         }
 
         public void Render()
         {
-            //0.1초당 화면 재생 비트이동도 0.1초당 함.
-            if (beatWatch.ElapsedMilliseconds > 100)
-            {
-                //Console.Clear();
-                ConSoleClear();
 
-                if (hart.Isbeats())
-                {
-                    hart.beatMove();
+            hart.Render();
 
-                    //여기는 비트가 하트에 맞았고, 플레이어가 누르기전에 맞았을때
-                    if (hart.IsNonCheckHit())
-                    {
-                        hart.Removebeats();
-                        combo = 0;
-
-                    }
-                }
-
-                beatWatch.Restart();
-
-                hart.Print();
-                Console.WriteLine();
-                Console.WriteLine(combo);
-
-            }
         }
 
-        public void ConSoleClear()
+        public static void ConSoleClear()
         {
-            Console.SetCursorPosition(0, hart.GetPos().Y);
-            Console.WriteLine("                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \n");
+
+            for (int i = 0; i <= height; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(strClear);
+            }
+
+        }
+
+        public void End()
+        {
+
         }
 
     }

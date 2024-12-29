@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace NecroDancer
+﻿namespace NecroDancer
 {
     public struct Point
     {
@@ -31,34 +29,21 @@ namespace NecroDancer
             return a.X != b.X && a.Y != b.Y;
         }
 
-        //햇갈려서 지움
-        //public static bool operator >(Point a, Point b)
-        //{
-        //    return a.X > b.X;
-        //}
-
-        //public static bool operator <(Point a, Point b)
-        //{
-        //    return a.X < b.X;
-        //}
-
-
     }
 
     class Beat
     {
         Point _point;
-        int _speed;
-        bool _isHart = false;
+
         bool _isLeft;//true면 왼쪽     false이면 오른쪽        
         string _image = "|";
 
 
 
-        public Beat(Point point, int speed, bool isLeft)
+        public Beat(Point point, bool isLeft)
         {
             _point = point;
-            _speed = speed;
+
             _isLeft = isLeft;
         }
 
@@ -72,16 +57,6 @@ namespace NecroDancer
             get { return _point; }
         }
 
-        public bool IsLeft
-        {
-            get { return _isLeft; }
-        }
-
-        public void SetSpeed(int speed)
-        {
-            _speed = speed;
-        }
-
         public void Move()
         {
             if (_isLeft)
@@ -93,13 +68,5 @@ namespace NecroDancer
                 _point.X -= 1;
             }
         }
-
-        public void IsHit()
-        {
-            _isHart = true;
-        }
-
-
-
     }
 }
