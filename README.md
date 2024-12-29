@@ -292,18 +292,12 @@
 ```
 ### 메소드
 ``` csharp
-	//몬스터들 랜덤스폰할때 겹치지않게 사용된 함수.
-	public Point RandomPos();
-	//게임매니저의 액션값과 공유하게 해주는 함수
-	public void SetAction(bool Action)
-	//몬스터들의 타이머를 담당.
-	public void SetTimer(Stopwatch stopwatch)
-	//몹랜덤생성등 초기화 기능
-	public void Init();
-	//플레이어 이동값이랑 타일정보갱신 전투등 메인로직이 담겨있는 메소드
-	public void Update();
-	//위의 정보를 가져와 그려주는 메소드. 이곳엔 탐색의 로직으로 쓸수있는 맨해튼거리 로직이 담겨있다.
-	public void Render();
+//벽근처로 리스폰되고 방향이 벽을 향했을때 방향 바꾸기용으로 만든 메소드. 랜덤으로 방향을 바꿔준다.
+public void RandomFword();
+//이동했으면 턴해서 이전방향으로 가게 만드는 메소드
+public void TunFword();
+//미리 이동해보는 메소드
+public Point NextMove();
 
 ```
 ---
