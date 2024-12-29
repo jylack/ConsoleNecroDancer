@@ -10,11 +10,40 @@ namespace ConsoleNecroDancer
        
     internal class Program
     {
-        static public void GameStart()
+        static public bool GameStart()
         {
+
+            bool isGamePlay = false;
+
             LogoPrint();
+            ConsoleKeyInfo inputKey;
+            Console.WriteLine();
+            Console.WriteLine("\t\t\t게임을 시작 하시겠습니까?");
+            Console.WriteLine("\t\t\t1.게임시작\t 2.게임 종료");
 
+            //입력 올바른값 체킹용
+            bool isGame = true;
 
+            while (isGame)
+            {
+                inputKey = Console.ReadKey(true);
+
+                switch (inputKey.Key)
+                {
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
+                        isGamePlay = true;
+                        isGame = false;
+                        break;
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        isGamePlay = false;
+                        isGame = false;
+                        break;
+                }
+            }
+
+            return isGamePlay;
         }
 
 
@@ -22,6 +51,14 @@ namespace ConsoleNecroDancer
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+
+            if (GameStart() == false)
+            {
+                Environment.Exit(0);
+            }
+
+
 
             GameManager gameManager = new GameManager();
             BattleManager battleManager = new BattleManager();
@@ -36,7 +73,6 @@ namespace ConsoleNecroDancer
 
             Console.CursorVisible = false;
 
-            GameStart();
             
 
             frameWatch.Start();

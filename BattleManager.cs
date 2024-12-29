@@ -205,8 +205,9 @@ namespace NecroDancer
 
             #region 몬스터이동
 
-            Console.SetCursorPosition(15, 15);
-            Console.WriteLine(monsterWatch.ElapsedMilliseconds);
+            //디버그 코드
+            //Console.SetCursorPosition(15, 15);
+            //Console.WriteLine(monsterWatch.ElapsedMilliseconds);
 
             if (monsterWatch.ElapsedMilliseconds > 1200)
             {
@@ -312,27 +313,27 @@ namespace NecroDancer
         public void Render()
         {
 
-            ////디버깅 코드
-            Slime temp = new Slime(new Point(0, 0));
+            ////디버그 코드
+            //Slime temp = new Slime(new Point(0, 0));
 
-            for (int i = 0; i < 5; i++)
-            {
-                Console.SetCursorPosition(20, i);
-                Console.Write("                                                                                           ");
-            }
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Console.SetCursorPosition(20, i);
+            //    Console.Write("                                                                                           ");
+            //}
 
-            for (int i = 0; i < monsters.Count; i++)
-            {
-                temp = monsters[i] as Slime;
-                Console.SetCursorPosition(20, i);
-                Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");
-                Console.Write($"\t방향 : {temp.fword} \t HP : {temp.Life} \t 생존: {temp.isAlive}");
-            }
+            //for (int i = 0; i < monsters.Count; i++)
+            //{
+            //    temp = monsters[i] as Slime;
+            //    Console.SetCursorPosition(20, i);
+            //    Console.Write($"{i}번 X : {temp.point.X}, Y : {temp.point.Y}");
+            //    Console.Write($"\t방향 : {temp.fword} \t HP : {temp.Life} \t 생존: {temp.isAlive}");
+            //}
 
 
 
-            Console.SetCursorPosition(20, 5);
-            Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
+            //Console.SetCursorPosition(20, 5);
+            //Console.Write($"player X :{player.point.X} Y : {player.point.Y} \t HP : {Player.Life}");
 
 
             //여기부터 본진코드
