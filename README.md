@@ -292,12 +292,12 @@
 ```
 ### 메소드
 ``` csharp
-//벽근처로 리스폰되고 방향이 벽을 향했을때 방향 바꾸기용으로 만든 메소드. 랜덤으로 방향을 바꿔준다.
-public void RandomFword();
-//이동했으면 턴해서 이전방향으로 가게 만드는 메소드
-public void TunFword();
-//미리 이동해보는 메소드
-public Point NextMove();
+	//벽근처로 리스폰되고 방향이 벽을 향했을때 방향 바꾸기용으로 만든 메소드. 랜덤으로 방향을 바꿔준다.
+	public void RandomFword();
+	//이동했으면 턴해서 이전방향으로 가게 만드는 메소드
+	public void TunFword();
+	//미리 이동해보는 메소드
+	public Point NextMove();
 
 ```
 ---
