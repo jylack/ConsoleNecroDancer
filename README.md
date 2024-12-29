@@ -222,7 +222,8 @@
 	//프로퍼티	
 	//get만 사용하고 ,set은 차단해두었다.  게임이 끝날떄까지 변동이 될 예정이 없었기 때문입니다.
 	public string Image{ get { return _image; } }
-	//좌표지정을 생성할때만 할것이기 때문에 굳이 다시 set할필요 없어서 사용 안했다. 무엇보다 움직일때 다른곳으로 갑자기 튀어나가면 안되기 때문에 이렇게 했습니다.
+	//좌표지정을 생성할때만 할것이기 때문에 굳이 다시 set할필요 없어서 사용 안했다.
+	//무엇보다 움직일때 다른곳으로 갑자기 튀어나가면 안되기 때문에 이렇게 했습니다.
 	public Point Point { get { return _point; } }
 
 ```
@@ -261,6 +262,33 @@
 	Stopwatch monsterWatch = new Stopwatch();
 
 	
+```
+### 메소드
+``` csharp
+	//몬스터들 랜덤스폰할때 겹치지않게 사용된 함수.
+	public Point RandomPos();
+	//게임매니저의 액션값과 공유하게 해주는 함수
+	public void SetAction(bool Action)
+	//몬스터들의 타이머를 담당.
+	public void SetTimer(Stopwatch stopwatch)
+	//몹랜덤생성등 초기화 기능
+	public void Init();
+	//플레이어 이동값이랑 타일정보갱신 전투등 메인로직이 담겨있는 메소드
+	public void Update();
+	//위의 정보를 가져와 그려주는 메소드. 이곳엔 탐색의 로직으로 쓸수있는 맨해튼거리 로직이 담겨있다.
+	public void Render();
+
+```
+## Slime.cs
+### 멤버변수
+```cs
+	
+	Random random = new Random();
+	//몬스터의 이동방향
+	public Fword fword = new Fword();
+	//공격가능한 몬스터인지 아닌지 정해줌.
+	bool isAtkMonster;
+
 ```
 ### 메소드
 ``` csharp
