@@ -46,9 +46,9 @@
 5. **사용 데이터 구조**
     
     - 프로젝트에서 사용할 데이터 구조와 그 용도.
-        - Hart 클래스 내에 Queue<Beat> beats; 가 있습니다.
+        - Hart 클래스 내에 Queue<Beat> beats; 가 있습니다.        
 	        - 비트가 들어온 순서대로 없어져야 해서 큐를 사용했습니다.
-		   - BattleManager에서 몬스터를 관리해주기 위해  List<Monster> monsters 를 만들었습니다. 추후 추가되는 모든 몬스터를 이곳에 넣고 
+	- BattleManager에서 몬스터를 관리해주기 위해  List<Monster> monsters 를 만들었습니다. 추후 추가되는 모든 몬스터를 이곳에 넣고 
          특수기능을 사용할때만 다형성으로 as 써서 해당 몬스터클래스로 바꿀예정이였습니다.
 ```
 			ex) ' case "ⓢ"://슬라임 -혼자 노는녀석 '
