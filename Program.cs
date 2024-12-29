@@ -3,13 +3,19 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
+
 namespace ConsoleNecroDancer
 {
 
-
+       
     internal class Program
     {
+        static public void GameStart()
+        {
+            LogoPrint();
 
+
+        }
 
 
 
@@ -21,24 +27,30 @@ namespace ConsoleNecroDancer
             BattleManager battleManager = new BattleManager();
 
             Stopwatch frameWatch = new Stopwatch();
-            Stopwatch hartWarch = new Stopwatch();
-
+            Stopwatch beatWatch = new Stopwatch();
+            Stopwatch monsterWarch = new Stopwatch();           
+            
             gameManager.Init();
             battleManager.Init();
 
 
             Console.CursorVisible = false;
 
-            LogoPrint();
-            Thread.Sleep(500);
+            GameStart();
+            
 
             frameWatch.Start();
+            beatWatch.Start();
+            monsterWarch.Start();
+
+            gameManager.SetTimer(beatWatch);
+            battleManager.SetTimer(monsterWarch);
 
 
-
-            while (true)
+            while (Player.Life > 0)
             {
-
+                if (frameWatch.ElapsedMilliseconds > 100)
+                {
                     gameManager.Update();
 
                     battleManager.SetAction(gameManager.isAction);
@@ -48,8 +60,7 @@ namespace ConsoleNecroDancer
                     GameManager.ConSoleClear();
 
                     frameWatch.Restart();
-
-                
+                }
 
                 battleManager.Render();
                 gameManager.Render();
@@ -58,6 +69,8 @@ namespace ConsoleNecroDancer
 
             }
 
+            monsterWarch.Stop();
+            beatWatch.Stop();
             frameWatch.Stop();
 
             gameManager.End();

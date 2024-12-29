@@ -10,6 +10,7 @@ namespace NecroDancer
         Hard = 1
     }
 
+    //방향
     public enum Fword
     {
         start,
@@ -47,7 +48,10 @@ namespace NecroDancer
         static string strClear = "";
 
 
-
+        public void SetTimer(Stopwatch stopwatch)
+        {
+            beatWatch = stopwatch;
+        }
 
 
         public void Init()
@@ -95,7 +99,6 @@ namespace NecroDancer
 
             input = new ConsoleKeyInfo();
 
-            beatWatch.Start();
 
             if (Console.KeyAvailable)
             {
@@ -132,8 +135,8 @@ namespace NecroDancer
 
             }
 
-            
-            if(beatWatch.ElapsedMilliseconds > 0.1)
+
+            if (beatWatch.ElapsedMilliseconds > 600)
             {
                 hart.Addbeat(hart.GetPos().Y);
                 beatWatch.Restart();
@@ -141,7 +144,6 @@ namespace NecroDancer
 
             hart.Update();
 
-            beatWatch.Stop();
         }
 
         public void Render()

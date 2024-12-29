@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using System.Threading;
 
 namespace NecroDancer
@@ -16,7 +12,7 @@ namespace NecroDancer
         //Monster monster;
         List<Item> dropItemList;//바닥에 아이템 떨군거 표시 
         List<Monster> monsters;//나중에 몬스터들 여기다 다 넣을거임.
-        
+
         Point playerTempPos;
 
         Point monsterNextPos;//몬스터 다음좌표 가지고있음.
@@ -32,11 +28,13 @@ namespace NecroDancer
         bool isPlayerMove = false;
         bool isAction = false;
 
+
+
         //들어온 값이랑 다른값이 나올때 까지 랜덤
         Random random1 = new Random();
         Random random2 = new Random();
 
-        Stopwatch beatWatch = new Stopwatch();
+        Stopwatch monsterWatch = new Stopwatch();
 
         public Point RandomPos()//pos랑 안에서 연산해줄애랑 달라야 나옴. 
         {
@@ -68,6 +66,13 @@ namespace NecroDancer
             isAction = Action;
         }
 
+        public void SetTimer(Stopwatch stopwatch)
+        {
+            monsterWatch = stopwatch;
+        }
+
+
+
         public void Init()
         {
 
@@ -96,7 +101,7 @@ namespace NecroDancer
             Thread.Sleep(1);
             monsters.Add(new Slime(RandomPos()));
 
-            
+
 
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -113,11 +118,11 @@ namespace NecroDancer
 
         }
 
-        
+
         public void Update()
         {
             GameManager.isGameStart = true;
-            beatWatch.Start();
+
 
             #region 플레이어이동
 
@@ -125,16 +130,18 @@ namespace NecroDancer
             //Console.SetCursorPosition(15,15);
             //Console.WriteLine(isAction);
 
+
+
             if (isPlayerMove)//이동해서 플레이어 좌표가 변하기 전의 정보를 넣어줘야함. 안그럼 타일에 정보남음.
             {
                 playerTempPos = player.point;
             }
 
 
-            
-            if (isAction)            
+
+            if (isAction)
             {
-            
+
                 switch (GameManager.input.Key)
                 {
                     //방향 이동.
@@ -162,6 +169,8 @@ namespace NecroDancer
 
                         break;
                 }
+
+
             }
 
 
@@ -192,106 +201,113 @@ namespace NecroDancer
 
             #endregion
 
+
+
             #region 몬스터이동
 
-            
+            Console.SetCursorPosition(15, 15);
+            Console.WriteLine(monsterWatch.ElapsedMilliseconds);
 
-            Queue<int> indexs = new Queue<int>();
-            string image;
-
-
-
-            for (int i = 0; i < monsters.Count; i++)
+            if (monsterWatch.ElapsedMilliseconds > 1200)
             {
-                //죽은 몬스터 리스트에서 지울까 생각했었음.
-                if (monsters[i].isAlive == false)//몬스터 재활용 바로바로 할거면 이게나음.
+                monsterWatch.Restart();
+                Queue<int> indexs = new Queue<int>();
+                string image;
+
+
+
+                for (int i = 0; i < monsters.Count; i++)
                 {
-                    //indexs.Enqueue(i);
-                    continue;
-                }
-
-                if (monsters[i].Life > 0)
-                {
-                    //이전좌표 저장
-                    monsterPrevPos = monsters[i].point;
-
-                    image = monsters[i].Image;
-
-                    switch (image)
+                    //죽은 몬스터 리스트에서 지울까 생각했었음.
+                    if (monsters[i].isAlive == false)//몬스터 재활용 바로바로 할거면 이게나음.
                     {
-                        case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
-                            //이런식으로 바꿔서 해주면될듯
-                            //Monster temp =  monsters[i] as Monster;
-                            //temp.TempMovePos(player, tempPos);
+                        //indexs.Enqueue(i);
+                        continue;
+                    }
 
-                            //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
-                            //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
-                            break;
-                        case "ⓢ"://슬라임 -혼자 노는녀석
+                    if (monsters[i].Life > 0)
+                    {
+                        //이전좌표 저장
+                        monsterPrevPos = monsters[i].point;
+
+                        image = monsters[i].Image;
+
+                        switch (image)
+                        {
+                            case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
+                                     //이런식으로 바꿔서 해주면될듯
+                                     //Monster temp =  monsters[i] as Monster;
+                                     //temp.TempMovePos(player, tempPos);
+
+                                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
+                                //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
+                                break;
+                            case "ⓢ"://슬라임 -혼자 노는녀석
+                                Slime slime = monsters[i] as Slime;
+                                //slime.Move();
+                                //다음좌표 저장
+                                monsterNextPos = slime.NextMove();
+
+                                //tempMonsterPos = slime.point;
+                                break;
+
+                            case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
+
+                                break;
+
+                        }
+
+                        //if (monsterNextPos.X == -1 && monsterNextPos.Y == -1)
+                        //{
+                        //    monsterNextPos = monsters[i].point;
+                        //}
+
+                        //임시 좌표로 몬스터 이동 가능한 지역인가 탐색
+
+                        //해당 위치가 플레이어가 아닌가? 그리고 바닥인가? 에대한 체크
+                        if (monsterNextPos != player.point &&
+                        TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Floor)
+                        {
+                            //다음 좌표로 몬스터 이동.
+
+
+                            monsters[i].Move(monsterNextPos);
+
+
+                            //어차피 타일정보는 초기화될것이지만
+                            //다음 몬스터들이 이전 몬스터들이 어디로 이동했는지 알기 위해
+                            //사용한 타일변경
+                            TileManager.SetTile(monsters[i].point, TileType.Monster);
+                            //posList.Add(monsters[i].point);
+
+                        }
+                        //이동 불가지역임. 나중에 몬스터별로 행동다르게 할지도
+                        else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Player)
+                        {
+                            monsters[i].Attack();
+                            monsters[i].point = monsterPrevPos;
+                        }
+                        else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Monster)
+                        {
                             Slime slime = monsters[i] as Slime;
-                            //slime.Move();
-                            //다음좌표 저장
-                            monsterNextPos = slime.NextMove();
-
-                            //tempMonsterPos = slime.point;
-                            break;
-
-                        case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
-
-                            break;
+                            slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
+                        }
 
                     }
-
-                    //if (monsterNextPos.X == -1 && monsterNextPos.Y == -1)
-                    //{
-                    //    monsterNextPos = monsters[i].point;
-                    //}
-
-                    //임시 좌표로 몬스터 이동 가능한 지역인가 탐색
-
-                    //해당 위치가 플레이어가 아닌가? 그리고 바닥인가? 에대한 체크
-                    if (monsterNextPos != player.point &&
-                    TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Floor)
+                    else
                     {
-                        //다음 좌표로 몬스터 이동.
-
-
-                        monsters[i].Move(monsterNextPos);
-
-
-                        //어차피 타일정보는 초기화될것이지만
-                        //다음 몬스터들이 이전 몬스터들이 어디로 이동했는지 알기 위해
-                        //사용한 타일변경
-                        TileManager.SetTile(monsters[i].point, TileType.Monster);
-                        //posList.Add(monsters[i].point);
+                        monsters[i].Die();
+                        indexs.Enqueue(i);
 
                     }
-                    //이동 불가지역임. 나중에 몬스터별로 행동다르게 할지도
-                    else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Player)                    
-                    {
-                        monsters[i].Attack();
-                        monsters[i].point = monsterPrevPos;
-                    }
-                    else if (TileManager.tiles[monsterNextPos.Y, monsterNextPos.X].GetTileType() == TileType.Monster)
-                    {
-                        Slime slime = monsters[i] as Slime;
-                        slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
-                    }
-
                 }
-                else
-                {
-                    monsters[i].Die();
-                    indexs.Enqueue(i);
-
-                }
-
-
 
             }
             #endregion
 
         }
+
+
 
         public void Render()
         {
@@ -361,14 +377,14 @@ namespace NecroDancer
                 for (int viewY = -player.viewPoint; viewY < player.viewPoint; viewY++)
                 {
                     int newX = player.point.X + viewX;
-                    int mewY = player.point.Y + viewY;
+                    int newY = player.point.Y + viewY;
 
                     if (Math.Abs(viewX) + Math.Abs(viewY) < player.viewPoint)
                     {
                         if (newX >= 0 && newX < TileManager.tileSize &&
-                            mewY >= 0 && mewY < TileManager.tileSize)
+                            newY >= 0 && newY < TileManager.tileSize)
                         {
-                            TileManager.tiles[mewY, newX].isView = true;
+                            TileManager.tiles[newY, newX].isView = true;
                         }
                     }
                 }

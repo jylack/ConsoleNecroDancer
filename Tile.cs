@@ -38,7 +38,7 @@ namespace NecroDancer
         public int Def { get { return _def; }}
 
         //타일들 보여줄꺼냐 말꺼냐
-        public bool isView = false;
+        public bool isView = true;
 
         public Tile()
         {
