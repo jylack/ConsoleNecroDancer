@@ -146,9 +146,9 @@
 	static string strClear = "";
 	
 	
-	```
-	### 메소드
-	``` csharp
+```
+### 메소드
+``` csharp
 	//프로그램 클래스에서 시계를 받아옴.
 	public void SetTimer(Stopwatch stopwatch);
 	
@@ -232,5 +232,51 @@
 
 ```
 
+## BattleManager.cs
+### 멤버변수
+```cs
+	
+	Player player;
+	
+	List<Item> dropItemList;//바닥에 아이템 떨군거 표시 
+	List<Monster> monsters;//나중에 몬스터들 여기다 다 넣을거임.
+	
+	Point playerTempPos;//플레이어가 이동할 다음좌표
+	
+	Point monsterNextPos;//몬스터 다음좌표 가지고있음.
+	Point monsterPrevPos;//몬스터 이전좌표 가지고있음.
+	
+	//스폰할떄 위치 저장해둔데 안가기 만들려고 씀.
+	List<Point> tempSpawnPos;
+	//플레이어가 미리 이동해본 좌표로 이동할수 있나 체킹해주는 변수
+	bool isPlayerMove = false;
+	bool isAction = false;
+	
+	
+	
+	//들어온 값이랑 다른값이 나올때 까지 랜덤
+	Random random1 = new Random();
+	Random random2 = new Random();
+	
+	Stopwatch monsterWatch = new Stopwatch();
+
+	
+```
+### 메소드
+``` csharp
+	//몬스터들 랜덤스폰할때 겹치지않게 사용된 함수.
+	public Point RandomPos();
+	//게임매니저의 액션값과 공유하게 해주는 함수
+	public void SetAction(bool Action)
+	//몬스터들의 타이머를 담당.
+	public void SetTimer(Stopwatch stopwatch)
+	//몹랜덤생성등 초기화 기능
+	public void Init();
+	//플레이어 이동값이랑 타일정보갱신 전투등 메인로직이 담겨있는 메소드
+	public void Update();
+	//위의 정보를 가져와 그려주는 메소드. 이곳엔 탐색의 로직으로 쓸수있는 맨해튼거리 로직이 담겨있다.
+	public void Render();
+
+```
 ---
-7
+
