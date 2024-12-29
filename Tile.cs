@@ -95,7 +95,7 @@ namespace NecroDancer
         public static Tile[,] tiles; //맵타일
         public static Tile[,] originTiles; //맵타일
 
-        static string[] tileImage = { " ", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "M", "P" };//전부 표기
+        static string[] tileImage = { " ", "■", "▥", "▦", "□", "▣", "◎", "△", "▼" , "ⓜ", "ⓟ" };//전부 표기
 
         public static string[] GetImage
         {

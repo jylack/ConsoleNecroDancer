@@ -13,10 +13,9 @@ namespace NecroDancer
         //TileManager TileManager;
         Player player;
         //Monster monster;
-        List<Item> dropItemList;//바닥에 아이템 떨군거 표시
+        List<Item> dropItemList;//바닥에 아이템 떨군거 표시 
         List<Monster> monsters;//나중에 몬스터들 여기다 다 넣을거임.
-
-        Point monsterSpawnPos;//나중에 랜덤으로 몬스터 생성할때 재활용 할 좌표
+        
         Point playerTempPos;
 
         Point monsterNextPos;//몬스터 다음좌표 가지고있음.
@@ -36,7 +35,6 @@ namespace NecroDancer
         Random random1 = new Random();
         Random random2 = new Random();
         
-        ConsoleKeyInfo input;
 
         public Point RandomPos()//pos랑 안에서 연산해줄애랑 달라야 나옴. 
         {
@@ -70,17 +68,15 @@ namespace NecroDancer
 
         public void Init()
         {
-            //posList = new List<Point>();
+
             tempTileTypes = new Queue<TileType>();
             monsters = new List<Monster>();
             tempSpawnPos = new List<Point>(); //첫 생성 좌표 다가지고있음. 몬스터 생성후 안씀.
 
-            //TileManager = new TileManager();
             TileManager.Init();
 
             player = new Player();
 
-            //monster = new Monster();
 
             monsterNextPos = new Point();
             playerTempPos = new Point(0, 3);
@@ -98,7 +94,7 @@ namespace NecroDancer
             Thread.Sleep(1);
             monsters.Add(new Slime(RandomPos()));
 
-            input = new ConsoleKeyInfo();
+            
 
             for (int i = 0; i < monsters.Count; i++)
             {
@@ -109,35 +105,13 @@ namespace NecroDancer
                 monsters[i].Spawn(monsters[i].point);
             }
 
-            //playerTempTile = TileManager.tiles[playerTempPos.Y, playerTempPos.X].GetTileType();
-
             player.Spawn(playerTempPos);
 
 
-            ////전체 좌표 가지고있을 리스트 초기화
-            //posList.Add(player.point);
 
-            //for(int i = 0; i < monsters.Count; i++)
-            //{
-            //    posList.Add(monsters[i].point);
-            //}
-
-            // PosListAdd();
         }
 
-        //public void PosListAdd()
-        //{
-        //    posList.Clear();
-
-        //    //전체 좌표 가지고있을 리스트 초기화
-        //    posList.Add(player.point);
-
-        //    for (int i = 0; i < monsters.Count; i++)
-        //    {
-        //        posList.Add(monsters[i].point);
-        //    }
-        //}
-
+        
         public void Update()
         {
             GameManager.isGameStart = true;
@@ -155,7 +129,7 @@ namespace NecroDancer
 
 
             
-            //if (isAction)            
+            if (isAction)            
             {
             
                 switch (GameManager.input.Key)
@@ -219,6 +193,7 @@ namespace NecroDancer
 
             Queue<int> indexs = new Queue<int>();
             string image;
+
 
 
             for (int i = 0; i < monsters.Count; i++)
@@ -297,32 +272,6 @@ namespace NecroDancer
                         Slime slime = monsters[i] as Slime;
                         slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
                     }
-
-                    /*
-                    //for (int j = 0; j < monsters.Count; j++)
-                    //{
-                    //    if (monsterNextPos == monsters[j].point)
-                    //    {
-                    //        switch (image)
-                    //        {
-                    //            case "ⓜ"://미노일떄 - 따라오는녀석 인식범위 플레이어 인식범위 +2
-                    //                     //이런식으로 바꿔서 해주면될듯
-                    //                     //Monster temp =  monsters[i] as Monster;
-                    //                     //temp.TempMovePos(player, tempPos);
-                    //                //임시 좌표에 이동할 좌표 미리옮겨봄. 옮긴거 큐에 넣어둠.
-                    //                //monsterPosQueue.Enqueue(monsters[i].TempMovePos(player, tempPos));
-                    //                break;
-                    //            case "ⓢ"://슬라임 -혼자 노는녀석
-                    //                Slime slime = monsters[i] as Slime;
-                    //                slime.fword = (Fword)random1.Next((int)Fword.start + 1, (int)Fword.end);
-                    //                //tempMonsterPos = slime.point;
-                    //                break;
-                    //            case "ⓚ"://스켈 -주변만 돌다가 근처면 따라오는녀석. 플레이어 인식범위
-                    //                break;
-                    //        }
-                    //    }
-                    //}
-                    */
 
                 }
                 else

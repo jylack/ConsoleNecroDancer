@@ -28,7 +28,7 @@ namespace NecroDancer
 
         Hart hart;
 
-
+        
 
 
         public static ConsoleKeyInfo input;
@@ -36,15 +36,18 @@ namespace NecroDancer
 
         public static bool isGameStart = true;
 
-        int beatSpeed = 1;
+        //int beatSpeed = 1;
 
         int combo = 0;
 
-        int gameSpeed = 600; // 0.6초당 박자 움직이기
 
         public bool isAction = false;
 
         static string strClear = "";
+
+
+
+
 
         public void Init()
         {
@@ -62,6 +65,18 @@ namespace NecroDancer
 
         public void KeyInputAction()
         {
+            isGameStart = false;
+
+            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
+            if (hart.Isbeats() && hart.IsCheckHit() == false)
+            {
+                combo = 0;
+                hart.Removebeats();
+                isAction = false;
+                return;
+            }
+
+
             //비트가 있고 하트가 맞았을때
             if (hart.Isbeats() && hart.IsCheckHit())
             {
@@ -69,15 +84,8 @@ namespace NecroDancer
                 hart.Removebeats();
                 isAction = true;
             }
-            //비트가 있고, 하트가 맞지 않았는데 플레이어가 눌렀을때
-            else if (hart.Isbeats() && hart.IsCheckHit() == false)
-            {
-                combo = 0;
-                hart.Removebeats();
-                isAction = false;
-            }
-
-            isGameStart = false;
+            
+            
 
         }
 
@@ -98,22 +106,23 @@ namespace NecroDancer
                         break;
 
                     //방향 이동.
-                    case ConsoleKey.A:
                     case ConsoleKey.LeftArrow:
+                    case ConsoleKey.A:
                         KeyInputAction();
                         break;
+
                     case ConsoleKey.RightArrow:
                     case ConsoleKey.D:
                         KeyInputAction();
-
                         break;
+
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.W:
                         KeyInputAction();
-
                         break;
-                    case ConsoleKey.S:
+
                     case ConsoleKey.DownArrow:
+                    case ConsoleKey.S:
                         KeyInputAction();
 
                         break;
@@ -137,11 +146,16 @@ namespace NecroDancer
         public static void ConSoleClear()
         {
             
-            for(int i = height; i <= height; i++)
+            for(int i = 0; i <= height; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write(strClear);
             }
+
+        }
+
+        public void End()
+        {
 
         }
 

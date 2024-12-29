@@ -11,7 +11,7 @@ namespace NecroDancer
         public static new int Life = 0;
         public static new int Def = 0;
 
-        public int viewPoint;
+        public int viewPoint;//시야넓이
 
         public Player()
         {

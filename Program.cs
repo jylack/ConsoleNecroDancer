@@ -14,13 +14,10 @@ namespace ConsoleNecroDancer
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-          
-
+        
             GameManager gameManager = new GameManager();
             BattleManager battleManager = new BattleManager();
             
-        
             gameManager.Init();
             battleManager.Init();
             
@@ -31,25 +28,22 @@ namespace ConsoleNecroDancer
 
             while (true)
             {
+                               
+                    gameManager.Update();
+
+                    battleManager.SetAction(gameManager.isAction);
                 
-                gameManager.Update();
+                    battleManager.Update();
+
+                    GameManager.ConSoleClear();
+
+                    battleManager.Render();
+                    gameManager.Render();
                 
 
-                //겜매니저의 하트 액션값을 넘겨줌
-                //잘들어가나 테스트
-                //Console.SetCursorPosition(20, 15);
-                //Console.WriteLine(gameManager.isAction);
-
-                battleManager.SetAction(gameManager.isAction);
-
-                battleManager.Update();
-                
-                //GameManager.ConSoleClear();
-
-                battleManager.Render();
-                gameManager.Render();
-                
             }
+
+            gameManager.End();
 
             
         }
