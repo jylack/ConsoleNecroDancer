@@ -201,14 +201,9 @@ namespace NecroDancer
 
             #region 몬스터이동
 
-            //디버그 코드
-            //Console.SetCursorPosition(15, 15);
-            //Console.WriteLine(monsterWatch.ElapsedMilliseconds);
-
             if (monsterWatch.ElapsedMilliseconds > 1200)
             {
                 monsterWatch.Restart();
-                Queue<int> indexs = new Queue<int>();
                 string image;
 
                 
@@ -219,7 +214,6 @@ namespace NecroDancer
                     //죽은 몬스터 리스트에서 지울까 생각했었음.
                     if (monsters[i].isAlive == false)//몬스터 재활용 바로바로 할거면 이게나음.
                     {
-                        //indexs.Enqueue(i);
                         continue;
                     }
 
@@ -295,7 +289,6 @@ namespace NecroDancer
                     else
                     {
                         monsters[i].Die();
-                        indexs.Enqueue(i);
                         killCount++;
 
                     }
