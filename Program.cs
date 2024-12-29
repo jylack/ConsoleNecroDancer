@@ -41,12 +41,12 @@ namespace ConsoleNecroDancer
 
             Console.Write(str);
 
-            //while (true)
-            //{
-            //    gameManager.Update();
-            //    battleManager.Update();
-            //    battleManager.Render();
-            //}
+            while (true)
+            {
+                gameManager.Update();
+                battleManager.Update();
+                battleManager.Render();
+            }
         }
 
         
