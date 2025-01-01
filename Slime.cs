@@ -40,7 +40,7 @@ namespace NecroDancer
 
         }
 
-        //어딘가 벽에서 생성되고 벽으로 이동하라 할때 호출
+        //어딘가 벽에서 몬스터가 리스폰되고 벽으로 이동하라 할때 호출
         public void RandomFword()
         {
             //0~3까지 행동값있음. 아무방향으로 정해줌
@@ -71,7 +71,7 @@ namespace NecroDancer
             }
         }
 
-
+        //미리 움직여보고 그 결과값이 움직일수 있는 상태면 그값을 반환 아니면 현재좌표를 반환.
         public Point NextMove()
         {
             int tempY = 0;
@@ -105,7 +105,7 @@ namespace NecroDancer
                                 //몬스터가 공격.
                                 Attack();
                             }
-
+                            
                             //다시 방향 돌아오기 위한 함수.
                             TunFword();
 
@@ -189,6 +189,7 @@ namespace NecroDancer
         }
 
         //음 결국 안쓰게됬음.
+        //결국 각 객체마다 이동의 패던이 전혀 달라지기때문에 겹치는 몬스터도 있지만 슬라임은 안겹쳐서 주석처리.
         public override void Move()
         {
             //int tempY;

@@ -23,7 +23,7 @@ namespace NecroDancer
             count++;
         }
 
-
+        //슬라임 클래스에선 NextMove가 대신활용. 이부분은 다른클래스에선 쓸수있을지도 몰라서 일단 내뛋음.
         //몬스터 좌표 이동안시키고 이동시킬 좌표 템프에 넣어둠.
         public Point TempMovePos(Unit target, Point tempPos)
         {
@@ -34,6 +34,7 @@ namespace NecroDancer
 
             //target 플레이어 유닛정보
             bool isMove = true;
+
             if (isMove)
             {
                 Random random = new Random();
@@ -221,12 +222,14 @@ namespace NecroDancer
 
         }
 
-
+        //각 몬스터마다 이동이달라져서 안쓰게된 코드.         
         public override void Move()
         {
 
         }
 
+        //부모클래스로 테스트한 코드. 
+        //잘 작동해서 자식 클래스로 써먹을라 했더니 각 객체마다 공격하는방법이 달라서 결국 참고용으로 주석만처리했음.
         //public void Move(Unit target, Point point)
         //{
 
